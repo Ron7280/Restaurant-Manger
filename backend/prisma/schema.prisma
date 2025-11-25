@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String      @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   
+  orders    Order[]
+  deliveries Delivery[] 
+}
+
+model MenuItem {
+  id          String       @id @default(uuid())
+  name        String
+  description String?
+  price       Float
+  imageUrl    String?
+  ingredients MenuItemIngredient[]
+  orderItems  OrderItem[]
+}
+
+model InventoryItem {
+  id          String       @id @default(uuid())
+  name        String
+  quantity    Float
+  unit        String
+  usedIn      MenuItemIngredient[]
+}
+
+model MenuItemIngredient {
+  id           String           @id @default(uuid())
+  menuItem     MenuItem      @relation(fields: [menuItemId], references: [id])
+  menuItemId   String
+  inventory    InventoryItem @relation(fields: [inventoryId], references: [id])
+  inventoryId  String
+  amount       Float
+}
+
+model Order {
+  id         String         @id @default(uuid())
+  customer   User        @relation(fields: [userId], references: [id])
+  userId     String
+  status     String      @default("pending") 
+  totalPrice Float
+  createdAt  DateTime    @default(now())
+  orderItems OrderItem[]
+  delivery   Delivery?
+}
+
+model OrderItem {
+  id         String       @id @default(uuid())
+  order      Order     @relation(fields: [orderId], references: [id])
+  orderId    String    @unique
+  menuItem   MenuItem  @relation(fields: [menuItemId], references: [id])
+  menuItemId String
+  quantity   Int
+}
+
+model Delivery {
+  id        String      @id @default(uuid())
+  order     Order    @relation(fields: [orderId], references: [id])
+  orderId   String   @unique
+  driver    User?    @relation(fields: [driverId], references: [id])
+  driverId  String?
+  status    String   @default("assigned")
+  lat       Float?
+  lng       Float?
+  updatedAt DateTime @updatedAt
+}
+
+
