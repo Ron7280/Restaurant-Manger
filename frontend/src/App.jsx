@@ -11,6 +11,8 @@ import Menu from "./Frames/Menu";
 import MainDashboard from "./Frames/MainDashboard";
 import ManageMenu from "./Frames/Admin/ManageMenu";
 import ManageInventory from "./Frames/Admin/ManageInventory";
+import ViewMenu from "./Frames/Customers/ViewMenu";
+import OrderPage from "./Components/OrderPage";
 
 function App() {
   const [changeTheme, setChangeTheme] = useState(false);
@@ -29,6 +31,8 @@ function App() {
                 <Route index element={<MainDashboard />} />
                 <Route path="manage" element={<ManageMenu />} />
                 <Route path="inventory" element={<ManageInventory />} />
+                <Route path="viewMenu" element={<ViewMenu />} />
+                <Route path="orderPage" element={<OrderPage />} />
               </Route>
             </Route>
           </Routes>

@@ -28,10 +28,10 @@ const ManageMenuCompo = ({ it, openEdit, confirmDelete }) => {
       className="rounded-xl bg-white shadow-black shadow-md border-2 hover:border-mainColor p-2 flex flex-col"
     >
       <div className="flex items-start gap-4">
-        <div className="w-20 h-24 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0">
+        <div className="w-[20%] h-24 rounded-xl bg-slate-100 overflow-hidden flex-shrink-0">
           {it.imageUrl ? (
             <img
-              path={it.imageUrl}
+              src={it.imageUrl}
               alt={it.name}
               className="w-full h-full object-cover"
             />

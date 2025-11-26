@@ -10,19 +10,19 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     if (token) setIsAuthenticated(true);
     setLoading(false);
   }, []);
 
   const login = (token) => {
-    sessionStorage.setItem("token", token);
+    localStorage.setItem("token", token);
     setIsAuthenticated(true);
     navigate("/menu");
   };
 
   const logout = () => {
-    sessionStorage.removeItem("token");
+    localStorage.removeItem("token");
     setIsAuthenticated(false);
     navigate("/");
   };

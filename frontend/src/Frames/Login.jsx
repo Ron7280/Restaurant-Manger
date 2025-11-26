@@ -6,7 +6,8 @@ import Alert from "../Components/Alert";
 import { Change_Theme_context } from "../Contexts";
 import { IoIosLogIn } from "react-icons/io";
 import { useAuth } from "../AuthContext";
-import { PiFilmSlateFill } from "react-icons/pi";
+import { GiMeal } from "react-icons/gi";
+import { API } from "../API_URL";
 
 const Login = () => {
   const [password, setPassword] = useState("");
@@ -20,7 +21,7 @@ const Login = () => {
   const { notifyS, notifyE, notifyW, notifyI } = Alert({ changeTheme });
   const { login } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!username || !password || !fname || !lname) {
@@ -35,12 +36,28 @@ const Login = () => {
       setCredentialsErr(false);
       return;
     }
-    const token = "user-token-from-api-or-from-backend";
-    localStorage.setItem("username", username);
-    localStorage.setItem("fname", fname);
-    localStorage.setItem("lname", lname);
-    login(token);
-    notifyS("Logged in successfully!");
+
+    try {
+      const res = await fetch(`${API}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, fname, lname, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        notifyE(data.error || "Login failed");
+        return;
+      }
+
+      localStorage.setItem("token", data.token);
+      login(data.token);
+      notifyS("Logged in successfully!");
+    } catch (err) {
+      notifyE("Failed to connect to server");
+      console.error(err);
+    }
   };
 
   const Fields = useMemo(
@@ -95,11 +112,11 @@ const Login = () => {
   );
 
   return (
-    <div className="h-screen w-full flex items-center justify-center bg-gradient-to-tr from-mainColor to-mainColor2">
-      <div className="bg-mainColor p-10 rounded-2xl shadow-2xl w-full max-w-lg border border-white/20 shadow-black">
+    <div className="h-screen w-full flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-700">
+      <div className="bg-gray-900 p-10 rounded-2xl shadow-2xl w-full max-w-lg border border-white/20 shadow-black">
         <div className="text-3xl flex items-center justify-center gap-2 font-semibold text-white  mb-6">
-          Ready , Set , Action
-          <PiFilmSlateFill size={40} />
+          Bon Appetit
+          <GiMeal size={40} />
         </div>
         <form
           className="flex flex-col space-y-5 font-semibold"
@@ -139,7 +156,7 @@ const Login = () => {
 
           <button
             type="submit"
-            className="bg-Indigo flex items-center gap-2 justify-center outline-none font-semibold 
+            className="bg-mainColor flex items-center gap-2 justify-center outline-none font-semibold 
             transition-all text-white py-3 rounded-lg shadow-lg"
           >
             Login <IoIosLogIn size={25} />

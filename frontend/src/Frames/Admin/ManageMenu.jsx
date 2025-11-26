@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { FaPlus, FaEdit, FaTrash, FaSearch, FaUtensils } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { FaPlus, FaSearch, FaUtensils } from "react-icons/fa";
 import { API } from "../../API_URL";
 import ManageMenuCompo from "../../Components/ManageMenuCompo";
 import Loader from "../../Components/Loader";
 import EditMenuModal from "../../Modals/EditMenuModal";
 import DeleteModal from "../../Modals/DeleteModal";
 
-function getAuthHeaders() {
-  const token = localStorage.getItem("token");
-  return token ? { Authorization: `Bearer ${token}` } : {};
-}
-
 const emptyForm = {
   name: "",
   description: "",
   price: "",
   imageUrl: "",
+  category: "",
 };
 
 const ManageMenu = () => {
@@ -33,12 +29,17 @@ const ManageMenu = () => {
   const [deletingItem, setDeletingItem] = useState(null);
   const [deleting, setDeleting] = useState(false);
 
+  const token = localStorage.getItem("token");
+
   const fetchItems = async () => {
     try {
       setLoading(true);
       setError(null);
       const res = await fetch(`${API}/menu/fetch_menu`, {
-        headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (!res.ok) throw new Error(`Failed to load menu: ${res.status}`);
       const data = await res.json();
@@ -68,6 +69,7 @@ const ManageMenu = () => {
       description: item.description || "",
       price: item.price != null ? String(item.price) : "",
       imageUrl: item.imageUrl || "",
+      category: item.category || "",
     });
     setModalOpen(true);
   };
@@ -85,6 +87,7 @@ const ManageMenu = () => {
       description: form.description?.trim() || null,
       price: parseFloat(form.price),
       imageUrl: form.imageUrl?.trim() || null,
+      category: form.category?.trim(),
     };
 
     try {
@@ -95,14 +98,20 @@ const ManageMenu = () => {
       if (editingItem) {
         res = await fetch(`${API}/menu/update_menu`, {
           method: "PUT",
-          headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify({ payload, id: editingItem.id }),
         });
         if (!res.ok) throw new Error(`Update failed: ${res.status}`);
       } else {
         res = await fetch(`${API}/menu/save_new`, {
           method: "POST",
-          headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify(payload),
         });
         if (!res.ok) throw new Error(`Create failed: ${res.status}`);
@@ -128,9 +137,13 @@ const ManageMenu = () => {
     if (!deletingItem) return;
     try {
       setDeleting(true);
-      const res = await fetch(`${API}/menu/${deletingItem.id}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+      const res = await fetch(`${API}/menu/delete_menu`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ id: deletingItem.id }),
       });
       if (!res.ok) throw new Error(`Delete failed: ${res.status}`);
       await fetchItems();

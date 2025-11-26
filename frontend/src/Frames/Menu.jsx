@@ -12,14 +12,14 @@ import { Outlet } from "react-router-dom";
 
 import SideBar from "./SideBar";
 
-const Menu = ({ role = "admin" }) => {
+const Menu = ({ role = "customer" }) => {
   const roleOptions = useMemo(() => {
     const options = {
       customer: [
         {
           text1: "View Menu",
           text2: "Browse dishes",
-          nav: "/menu",
+          nav: "/menu/viewMenu",
           icon: <FaUtensils size={30} />,
         },
         {
@@ -112,7 +112,7 @@ const Menu = ({ role = "admin" }) => {
   }, [role]);
 
   return (
-    <div className="h-screen w-full flex bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-900 text-slate-100">
+    <div className="h-screen w-full flex bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-700 text-slate-100">
       <SideBar role={role} roleOptions={roleOptions} />
 
       <Outlet context={{ role, roleOptions }} />

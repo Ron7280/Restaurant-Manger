@@ -36,8 +36,16 @@ const EditMenuModal = ({
         value: form.price,
         onChange: (e) => setForm((s) => ({ ...s, price: e.target.value })),
       },
+      {
+        id: 4,
+        title: "Category",
+        type: "input",
+        isNumber: false,
+        value: form.category,
+        onChange: (e) => setForm((s) => ({ ...s, category: e.target.value })),
+      },
     ],
-    [form]
+    [form, setForm]
   );
 
   return (
@@ -99,7 +107,7 @@ const EditMenuModal = ({
                     setForm((s) => ({
                       ...s,
                       imageFile: file,
-                      imageUrl: file.name,
+                      imageUrl: URL.createObjectURL(file),
                       imagePreview: URL.createObjectURL(file),
                     }));
                   }
