@@ -24,6 +24,7 @@ model MenuItem {
   description String?
   price       Float
   imageUrl    String?
+  category    String?  
   ingredients MenuItemIngredient[]
   orderItems  OrderItem[]
 }

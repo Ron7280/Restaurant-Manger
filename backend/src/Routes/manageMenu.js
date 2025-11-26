@@ -2,8 +2,9 @@ require("dotenv").config();
 const express = require("express");
 const prisma = require("../prismaClient.js");
 const router = express.Router();
+const { authenticateToken } = require("../../middlewars/AuthToken.js");
 
-router.get("/fetch_menu", async (req, res) => {
+router.get("/fetch_menu", authenticateToken, async (req, res) => {
   try {
     const menuItems = await prisma.menuItem.findMany({
       include: { ingredients: true },
@@ -16,14 +17,18 @@ router.get("/fetch_menu", async (req, res) => {
   }
 });
 
-router.post("/save_new", async (req, res) => {
+router.post("/save_new", authenticateToken, async (req, res) => {
+  const { name, description, price, imageUrl, category } = req.body;
+
   try {
-    const { name, description, price, imageUrl } = req.body;
     if (!name || price == null)
       return res.status(400).json({ error: "Name and price are required" });
 
+    if (!category)
+      return res.status(400).json({ error: "Category is required" });
+
     const menuItem = await prisma.menuItem.create({
-      data: { name, description, price, imageUrl },
+      data: { name, description, price, imageUrl, category },
     });
 
     res.status(201).json(menuItem);
@@ -33,7 +38,7 @@ router.post("/save_new", async (req, res) => {
   }
 });
 
-router.put("/update_menu", async (req, res) => {
+router.put("/update_menu", authenticateToken, async (req, res) => {
   try {
     const { payload, id } = req.body;
 
@@ -54,10 +59,9 @@ router.put("/update_menu", async (req, res) => {
   }
 });
 
-router.delete("/delete_menu", async (req, res) => {
+router.post("/delete_menu", authenticateToken, async (req, res) => {
+  const { id } = req.body;
   try {
-    const { id } = req.params;
-
     await prisma.menuItem.delete({
       where: { id },
     });
