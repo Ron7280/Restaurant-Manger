@@ -107,7 +107,7 @@ const Menu = ({ role = "customer" }) => {
 
   return (
     <div className="h-screen w-full flex bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-700 text-slate-100">
-      <SideBar role={role} roleOptions={roleOptions} />
+      <SideBar roleOptions={roleOptions} />
 
       <Outlet context={{ role, roleOptions }} />
     </div>

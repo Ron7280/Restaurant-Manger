@@ -22,13 +22,21 @@ const config = {
         Red: "#FF0000",
         Indigo: "#4338CA",
       },
-      direction: {
-        rtl: "rtl",
-        ltr: "ltr",
-      },
     },
   },
-  plugins: [scrollbarPlugin({ nocompatible: true })],
+  plugins: [
+    scrollbarPlugin({ nocompatible: true }),
+    function ({ addUtilities }) {
+      addUtilities({
+        ".scroll-left": {
+          direction: "rtl",
+        },
+        ".scroll-left-content": {
+          direction: "ltr",
+        },
+      });
+    },
+  ],
 };
 
 export default config;

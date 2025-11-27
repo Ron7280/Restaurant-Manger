@@ -18,13 +18,13 @@ const prisma = require("../prismaClient.js");
 //   }
 
 //   try {
-//     let user = await prisma.user.findUnique({ where: { email: username } });
+//     let user = await prisma.user.findUnique({ where: { username: username } });
 
 //     if (!user) {
 //       user = await prisma.user.create({
 //         data: {
 //           name: `${fname} ${lname}`,
-//           email: username,
+//           username: username,
 //           password,
 //           role: "customer",
 //         },
@@ -32,7 +32,7 @@ const prisma = require("../prismaClient.js");
 //     }
 
 //     const token = jwt.sign(
-//       { id: user.id, username: user.email },
+//       { id: user.id, username: user.username },
 //       process.env.JWT_SECRET,
 //       {
 //         expiresIn: "1h",
@@ -56,7 +56,9 @@ router.post("/login", async (req, res) => {
   }
 
   try {
-    const user = await prisma.user.findUnique({ where: { email: username } });
+    const user = await prisma.user.findUnique({
+      where: { username: username },
+    });
 
     if (!user) {
       return res.status(401).json({ error: "Invalid username or password" });
@@ -69,12 +71,17 @@ router.post("/login", async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, username: user.email },
+      { id: user.id, username: user.username },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
-    res.json({ token, userId: user.id });
+    res.json({
+      token,
+      userId: user.id,
+      role: user.role,
+      username: user.username,
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Login failed" });

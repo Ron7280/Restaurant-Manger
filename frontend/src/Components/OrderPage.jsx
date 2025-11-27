@@ -11,7 +11,6 @@ const OrderPage = () => {
   const order = location.state?.order || [];
   const [orderList, setOrderList] = useState(order);
   const token = localStorage.getItem("token");
-
   const navigate = useNavigate();
 
   const increaseQty = (id) => {
