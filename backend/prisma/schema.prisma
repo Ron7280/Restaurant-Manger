@@ -58,9 +58,9 @@ model Order {
 }
 
 model OrderItem {
-  id         String       @id @default(uuid())
+  id         String    @id @default(uuid())
   order      Order     @relation(fields: [orderId], references: [id])
-  orderId    String    @unique
+  orderId    String
   menuItem   MenuItem  @relation(fields: [menuItemId], references: [id])
   menuItemId String
   quantity   Int

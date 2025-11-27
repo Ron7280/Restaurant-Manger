@@ -23,15 +23,9 @@ const Menu = ({ role = "customer" }) => {
           icon: <FaUtensils size={30} />,
         },
         {
-          text1: "New Order",
-          text2: "Place a new order",
-          nav: "/orders/new",
-          icon: <FaReceipt size={30} />,
-        },
-        {
           text1: "My Orders",
           text2: "Track your orders",
-          nav: "/orders",
+          nav: "/menu/MyOrders",
           icon: <FaClipboardList size={30} />,
         },
       ],

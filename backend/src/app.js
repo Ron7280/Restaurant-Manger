@@ -24,12 +24,8 @@ app.get("/", (req, res) => {
   res.send("Welcome to movie Restaurant project!");
 });
 
-app.get("/menu", async (req, res) => {
-  const menuItems = await prisma.menuItem.findMany();
-  res.json(menuItems);
-});
-
 app.use("/menu", require("./Routes/manageMenu.js"));
 app.use("/auth", require("./Routes/Login.js"));
+app.use("/order", require("./Routes/Orders.js"));
 
 module.exports = app;

@@ -9,9 +9,9 @@ const MainDashboard = () => {
     <div className="flex-1 p-10">
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-extrabold tracking-tight">
+          <div className="text-3xl font-extrabold tracking-tight">
             Welcome back
-          </h2>
+          </div>
           <p className="text-slate-300 mt-1">Choose an action to get started</p>
         </div>
         <div className="flex items-center gap-4">

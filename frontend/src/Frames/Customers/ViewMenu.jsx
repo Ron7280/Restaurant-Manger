@@ -14,12 +14,18 @@ const ViewMenu = () => {
   const [budget, setBudget] = useState("");
   const [order, setOrder] = useState([]);
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   const fetchMenu = async () => {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch(`${API}/menu`);
+      const res = await fetch(`${API}/menu/fetch_menu`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
       const data = await res.json();
       setMenuItems(data);
@@ -39,13 +45,11 @@ const ViewMenu = () => {
       const existingItem = prevOrder.find((i) => i.id === item.id);
 
       if (existingItem) {
-        // increase qty
         return prevOrder.map((i) =>
           i.id === item.id ? { ...i, qty: i.qty + 1 } : i
         );
       }
 
-      // add new item with qty = 1
       return [...prevOrder, { ...item, qty: 1 }];
     });
   };
@@ -98,7 +102,7 @@ const ViewMenu = () => {
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="p-2 w-[10%] border text-black rounded-md"
+          className="p-2 w-[10%] border text-gray-600 outline-none rounded-md"
         >
           {categories.map((cat) => (
             <option key={cat} value={cat}>

@@ -52,6 +52,7 @@ const Login = () => {
       }
 
       localStorage.setItem("token", data.token);
+      localStorage.setItem("userId", data.userId);
       login(data.token);
       notifyS("Logged in successfully!");
     } catch (err) {

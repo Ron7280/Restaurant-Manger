@@ -18,7 +18,7 @@ const ViewMenuCompo = ({ item, onAddToOrder }) => {
         {item.category && (
           <div
             className="absolute top-2 left-2 bg-yellow-400 text-center
-           text-black p-1 min-w-[20%] max-w-[40%] rounded-md text-xs font-semibold
+           text-black p-1 min-w-[20%] max-w-[40%] rounded-md text-xs
             font-semibold"
           >
             {item.category}
