@@ -164,8 +164,8 @@ const ManageMenu = () => {
   );
 
   return (
-    <div className="p-8 h-full w-full">
-      <div className="flex items-center justify-between mb-6">
+    <div className="p-3 h-full w-full flex flex-col gap-3">
+      <div className="flex items-center h-[5%] justify-between">
         <div className="w-[50%]">
           <div className="flex items-center gap-3 text-2xl  font-semibold text-mainColor">
             <FaUtensils size={40} /> Manage Menu
@@ -195,18 +195,21 @@ const ManageMenu = () => {
       </div>
 
       {loading && (
-        <div className=" flex items-center justify-center w-full h-full">
+        <div className=" flex items-center justify-center w-full h-[95%]">
           <Loader type="dots" color="#10b981" />
         </div>
       )}
 
       {error && (
-        <div className=" flex items-center justify-center w-full h-full text-Red text-xl">
+        <div className=" flex items-center justify-center w-full h-[95%] text-Red text-xl">
           {error}
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 h-[95%]
+       overflow-y-auto scrollbar-thin scrollbar-thumb-mainColor scrollbar-track-transparent"
+      >
         {filtered.map((it, index) => (
           <ManageMenuCompo
             key={index}

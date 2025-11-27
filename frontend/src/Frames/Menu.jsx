@@ -12,7 +12,7 @@ import { Outlet } from "react-router-dom";
 
 import SideBar from "./SideBar";
 
-const Menu = ({ role = "customer" }) => {
+const Menu = ({ role = "admin" }) => {
   const roleOptions = useMemo(() => {
     const options = {
       customer: [

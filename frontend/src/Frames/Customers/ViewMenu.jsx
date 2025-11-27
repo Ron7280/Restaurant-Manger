@@ -121,7 +121,7 @@ const ViewMenu = () => {
       </div>
 
       <div
-        className="grid grid-cols-5 gap-3 pr-1 overflow-y-auto h-[94%] scrollbar-thin
+        className="grid grid-cols-5 gap-3 pr-1 h-[94%] overflow-y-auto scrollbar-thin
        scrollbar-thumb-mainColor scrollbar-track-transparent"
       >
         {filteredItems.map((item, index) => (
