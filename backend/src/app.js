@@ -6,7 +6,6 @@ const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 const app = express();
 const { allowedOrigins } = require("./API");
-const prisma = require("./prismaClient");
 
 app.use(
   cors({
@@ -16,7 +15,7 @@ app.use(
 );
 
 app.use(helmet());
-app.use(express.json({ limit: "50mb" }));
+app.use(express.json({ limit: "10mb" }));
 app.use(morgan("dev"));
 app.use(cookieParser());
 
@@ -27,5 +26,6 @@ app.get("/", (req, res) => {
 app.use("/menu", require("./Routes/manageMenu.js"));
 app.use("/auth", require("./Routes/Login.js"));
 app.use("/order", require("./Routes/Orders.js"));
+app.use("/inventory", require("./Routes/manageInventory.js"));
 
 module.exports = app;

@@ -18,6 +18,7 @@ model User {
   deliveries   Delivery[] 
 }
 
+
 model MenuItem {
   id          String       @id @default(uuid())
   name        String
@@ -32,8 +33,10 @@ model MenuItem {
 model InventoryItem {
   id          String       @id @default(uuid())
   name        String
+  category    String  
   quantity    Float
   unit        String
+  imageUrl    String?
   usedIn      MenuItemIngredient[]
 }
 

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { FaPlus, FaSearch, FaUtensils } from "react-icons/fa";
+import { FaUtensils } from "react-icons/fa";
 import { API } from "../../API_URL";
 import ManageMenuCompo from "../../Components/ManageMenuCompo";
 import Loader from "../../Components/Loader";
 import EditMenuModal from "../../Modals/EditMenuModal";
 import DeleteModal from "../../Modals/DeleteModal";
+import Header from "../../Components/Header";
 
 const emptyForm = {
   name: "",
@@ -165,34 +166,13 @@ const ManageMenu = () => {
 
   return (
     <div className="p-3 h-full w-full flex flex-col gap-3">
-      <div className="flex items-center h-[5%] justify-between">
-        <div className="w-[50%]">
-          <div className="flex items-center gap-3 text-2xl  font-semibold text-mainColor">
-            <FaUtensils size={40} /> Manage Menu
-          </div>
-        </div>
-
-        <div className="flex items-center justify-end w-[50%] gap-3">
-          <div className="flex justify-between w-[50%] rounded-lg bg-white items-center pl-2 pr-2 shadow-md shadow-black">
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search menu . . ."
-              className="w-full bg-transparent outline-none text-black font-semibold p-2"
-            />
-            <FaSearch className="text-emerald-400" />
-          </div>
-
-          <button
-            onClick={openCreate}
-            className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-mainColor text-white
-              rounded-lg shadow-md shadow-black p-2"
-          >
-            <FaPlus /> New Item
-          </button>
-        </div>
-      </div>
+      <Header
+        icon={FaUtensils}
+        title="Manage Menu"
+        searchQuery={search}
+        handleSearchChange={(e) => setSearch(e.target.value)}
+        setModalOpen={openCreate}
+      />
 
       {loading && (
         <div className=" flex items-center justify-center w-full h-[95%]">
@@ -207,7 +187,7 @@ const ManageMenu = () => {
       )}
 
       <div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 h-[95%]
+        className="grid grid-cols-3 gap-3 h-fit pb-3
        overflow-y-auto scrollbar-thin scrollbar-thumb-mainColor scrollbar-track-transparent"
       >
         {filtered.map((it, index) => (

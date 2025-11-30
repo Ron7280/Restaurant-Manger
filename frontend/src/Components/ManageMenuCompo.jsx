@@ -25,10 +25,10 @@ const ManageMenuCompo = ({ it, openEdit, confirmDelete }) => {
   return (
     <div
       key={it.id}
-      className="rounded-xl justify-center bg-white shadow-black shadow-md border-2 hover:border-mainColor p-2 flex flex-col"
+      className="rounded-xl justify-center h-40 bg-white shadow-black shadow-md flex flex-col"
     >
-      <div className="flex items-center justify-center gap-4">
-        <div className="w-[20%] h-24  rounded-xl bg-gray-200 overflow-hidden flex-shrink-0">
+      <div className="flex items-center w-full h-full justify-center gap-2">
+        <div className="w-[30%] h-full rounded-xl bg-gray-200 overflow-hidden">
           {it.imageUrl ? (
             <img
               src={it.imageUrl}
@@ -42,27 +42,28 @@ const ManageMenuCompo = ({ it, openEdit, confirmDelete }) => {
           )}
         </div>
 
-        <div className="w-full flex flex-col gap-3">
-          <div className="flex items-center justify-between gap-4">
-            <div className="w-full">
-              <div className="flex justify-between items-center w-full">
-                <div className="font-semibold text-xl text-slate-800">
-                  {it.name}
-                </div>
-                <div
-                  className="text-lg font-bold text-white w-[20%] text-center
+        <div className="w-[70%] h-full flex flex-col gap-2 p-2 ">
+          <div className="w-full h-[75%] ">
+            <div className="flex justify-between items-center w-full h-[30%]">
+              <div className="font-semibold text-xl text-slate-800">
+                {it.name}
+              </div>
+              <div
+                className="text-lg font-bold text-white w-[20%] text-center
                  bg-mainColor rounded-lg"
-                >
-                  ${Number(it.price).toFixed(2)}
-                </div>
+              >
+                ${Number(it.price).toFixed(2)}
               </div>
-              <div className="font-semibold text-slate-400">
-                {it.description}
-              </div>
+            </div>
+            <div
+              className="font-semibold h-[70%] overflow-auto scrollbar-track-transparent 
+            scrollbar-thin scrollbar-thumb-transparent text-slate-400"
+            >
+              {it.description}
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex h-[25%] items-center justify-end gap-2">
             {buttons.map((btn, index) => {
               return (
                 <AnimatedButton
