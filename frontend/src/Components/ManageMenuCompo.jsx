@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { MdImageNotSupported } from "react-icons/md";
 import AnimatedButton from "./AnimatedButton";
+import { API } from "../API_URL";
 
 const ManageMenuCompo = ({ it, openEdit, confirmDelete }) => {
   const buttons = useMemo(
@@ -25,13 +26,13 @@ const ManageMenuCompo = ({ it, openEdit, confirmDelete }) => {
   return (
     <div
       key={it.id}
-      className="rounded-xl justify-center h-40 bg-white shadow-black shadow-md flex flex-col"
+      className="rounded-xl justify-center  h-40 bg-white shadow-black shadow-md flex flex-col"
     >
       <div className="flex items-center w-full h-full justify-center gap-2">
         <div className="w-[30%] h-full rounded-xl bg-gray-200 overflow-hidden">
           {it.imageUrl ? (
             <img
-              src={it.imageUrl}
+              src={`${API}${it.imageUrl}`}
               alt={it.name}
               className="w-full h-full object-cover"
             />
@@ -42,8 +43,8 @@ const ManageMenuCompo = ({ it, openEdit, confirmDelete }) => {
           )}
         </div>
 
-        <div className="w-[70%] h-full flex flex-col gap-2 p-2 ">
-          <div className="w-full h-[75%] ">
+        <div className="w-[70%] h-full flex flex-col gap-2 p-2">
+          <div className="w-full h-[75%]">
             <div className="flex justify-between items-center w-full h-[30%]">
               <div className="font-semibold text-xl text-slate-800">
                 {it.name}

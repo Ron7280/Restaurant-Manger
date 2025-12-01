@@ -16,8 +16,6 @@ router.get("/inventory_items", authenticateToken, async (req, res) => {
 router.post("/add_item", authenticateToken, async (req, res) => {
   const { itemData } = req.body;
 
-  console.log("itemData--> ", itemData);
-
   if (
     !itemData.name ||
     !itemData.quantity ||

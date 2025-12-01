@@ -83,13 +83,15 @@ const ManageMenu = () => {
       return;
     }
 
-    const payload = {
-      name: form.name.trim(),
-      description: form.description?.trim() || null,
-      price: parseFloat(form.price),
-      imageUrl: form.imageUrl?.trim() || null,
-      category: form.category?.trim(),
-    };
+    const formData = new FormData();
+    formData.append("name", form.name.trim());
+    formData.append("description", form.description?.trim() || "");
+    formData.append("price", parseFloat(form.price));
+    formData.append("category", form.category?.trim() || "");
+
+    if (form.imageFile) {
+      formData.append("image", form.imageFile);
+    }
 
     try {
       setSaving(true);
@@ -97,28 +99,32 @@ const ManageMenu = () => {
 
       let res;
       if (editingItem) {
+        formData.append("id", editingItem.id);
         res = await fetch(`${API}/menu/update_menu`, {
           method: "PUT",
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ payload, id: editingItem.id }),
+          body: formData,
         });
-        if (!res.ok) throw new Error(`Update failed: ${res.status}`);
       } else {
         res = await fetch(`${API}/menu/save_new`, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(payload),
+          body: formData,
         });
-        if (!res.ok) throw new Error(`Create failed: ${res.status}`);
       }
 
-      // refresh list after successful operation
+      if (!res.ok) throw new Error(`Save failed: ${res.status}`);
+
+      const data = await res.json();
+      setForm((prevForm) => ({
+        ...prevForm,
+        imageUrl: data.imageUrl,
+      }));
+
       await fetchItems();
       setModalOpen(false);
     } catch (err) {
@@ -187,7 +193,7 @@ const ManageMenu = () => {
       )}
 
       <div
-        className="grid grid-cols-3 gap-3 h-fit pb-3
+        className="grid grid-cols-3 gap-3 h-fit
        overflow-y-auto scrollbar-thin scrollbar-thumb-mainColor scrollbar-track-transparent"
       >
         {filtered.map((it, index) => (

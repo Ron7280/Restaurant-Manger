@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaSearch, FaPlus, FaUtensils, FaBoxOpen } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
+import { FaBoxOpen } from "react-icons/fa";
 import AddItemModal from "../../Modals/AddItemModal";
 import { API } from "../../API_URL";
 import ItemTable from "../../Components/ItemTable";
@@ -56,25 +55,23 @@ const ManageInventory = () => {
     e.preventDefault();
     setSaving(true);
 
-    // Validate form data
     if (!form.name.trim() || !form.category || !form.unit) {
       alert("Please provide name, category, and unit.");
-      setSaving(false); // Stop the saving process if validation fails
+      setSaving(false);
       return;
     }
 
-    // Make sure the quantity is a number
     const quantity = parseFloat(form.quantity);
     if (isNaN(quantity)) {
       alert("Please provide a valid quantity.");
-      setSaving(false); // Stop the saving process if validation fails
+      setSaving(false);
       return;
     }
 
     const itemData = {
       name: form.name.trim(),
-      quantity: quantity, // Ensure quantity is a number
-      unit: form.unit.trim(), // Ensure unit is a non-empty string
+      quantity: quantity,
+      unit: form.unit.trim(),
       category: form.category?.trim(),
       imageUrl: form.imageUrl?.trim() || null,
     };
@@ -114,19 +111,19 @@ const ManageInventory = () => {
         setModalOpen={setModalOpen}
       />
 
-      {/* Search Bar */}
+      <div className="flex flex-col gap-3 w-full h-[95%] ">
+        <ItemTable
+          filteredItems={filteredItems}
+          quantityFilter={50}
+          comparisonType=">"
+        />
 
-      <ItemTable
-        filteredItems={filteredItems}
-        quantityFilter={50}
-        comparisonType=">"
-      />
-
-      <ItemTable
-        filteredItems={filteredItems}
-        quantityFilter={50}
-        comparisonType="<"
-      />
+        <ItemTable
+          filteredItems={filteredItems}
+          quantityFilter={50}
+          comparisonType="<"
+        />
+      </div>
 
       {modalOpen && (
         <AddItemModal

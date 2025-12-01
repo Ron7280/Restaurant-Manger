@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { MdImageNotSupported } from "react-icons/md";
 import { FaCartArrowDown } from "react-icons/fa";
+import { API } from "../API_URL";
 
 const ViewMenuCompo = ({ item, onAddToOrder }) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -11,7 +12,7 @@ const ViewMenuCompo = ({ item, onAddToOrder }) => {
         <div className="w-full h-[50%] bg-gray-100 flex items-center justify-center relative cursor-pointer">
           {item.imageUrl ? (
             <img
-              src={item.imageUrl}
+              src={`${API}${item.imageUrl}`}
               alt={item.name}
               className="w-full h-full object-cover"
               onClick={() => setIsFullScreen(true)}
@@ -35,7 +36,7 @@ const ViewMenuCompo = ({ item, onAddToOrder }) => {
             {item.name}
           </div>
           <div className="text-gray-500 flex-1 h-[60%] overflow-auto scrollbar-thin scrollbar-thumb-transparent scrollbar-track-transparent hover:scrollbar-thumb-gray-400/50">
-            {item.description} {item.description}
+            {item.description}
           </div>
 
           <div className="flex h-[20%] justify-between gap-3 items-center">

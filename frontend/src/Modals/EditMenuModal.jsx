@@ -90,10 +90,7 @@ const EditMenuModal = ({
           <div>
             <div className="font-semibold text-slate-700 mb-1">Image</div>
 
-            <label
-              className="cursor-pointer flex items-center gap-2
-            p-2 border rounded-md"
-            >
+            <label className="cursor-pointer flex items-center gap-2 p-2 border rounded-md">
               <div className="flex items-center gap-3">
                 <FaImages size={20} /> Upload Image
               </div>

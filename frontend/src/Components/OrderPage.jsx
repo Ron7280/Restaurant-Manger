@@ -112,7 +112,7 @@ const OrderPage = () => {
               >
                 <img
                   className="min-w-[15%] max-w-[15%] h-24 rounded-lg object-cover"
-                  src={item.imageUrl}
+                  src={`${API}${item.imageUrl}`}
                   alt={item.name}
                 />
 

@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { MdDelete } from "react-icons/md";
+import { FaTableList } from "react-icons/fa6";
+import { BiSolidHide } from "react-icons/bi";
 
 const ItemTable = ({ filteredItems, quantityFilter, comparisonType }) => {
+  const [isTableVisible, setIsTableVisible] = useState(true);
+
   const applyFilter = (itemQuantity) => {
     switch (comparisonType) {
       case ">":
@@ -17,18 +21,23 @@ const ItemTable = ({ filteredItems, quantityFilter, comparisonType }) => {
 
   return (
     <div className="overflow-x-auto bg-white text-black font-semibold rounded-lg shadow-md">
-      <table className="w-full table-auto ">
+      <table className="w-full table-auto">
         <thead className="bg-mainColor text-white">
           <tr>
-            <th className="p-2">Image</th>
-            <th className="p-2">Item</th>
-            <th className="p-2">Category</th>
-            <th className="p-2">Quantity</th>
-            <th className="p-2">Unit</th>
-            <th className="p-2">Actions</th>
+            <th className="p-2 w-[5%]">Image</th>
+            <th className="p-2 w-[20%]">Item</th>
+            <th className="p-2 w-[20%]">Category</th>
+            <th className="p-2 w-[20%]">Quantity</th>
+            <th className="p-2 w-[15%]">Unit</th>
+            <th className="p-2 w-[18%]">Actions</th>
+            <th className="p-2 pt-3 w-[2%] flex items-center justify-center">
+              <button onClick={() => setIsTableVisible((prev) => !prev)}>
+                {isTableVisible ? <BiSolidHide /> : <FaTableList />}
+              </button>
+            </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody style={{ display: isTableVisible ? "table-row-group" : "none" }}>
           {filteredItems.length === 0 ? (
             <tr>
               <td colSpan="5" className="text-center py-4">
@@ -51,7 +60,7 @@ const ItemTable = ({ filteredItems, quantityFilter, comparisonType }) => {
                     {item.quantity}
                   </td>
                   <td className="p-2">{item.unit}</td>
-                  <td className="p-2 flex justify-center gap-3">
+                  <td className="p-2  flex justify-center gap-3">
                     <button
                       onClick={() => alert("Edit item functionality")}
                       className="text-yellow-500 hover:text-yellow-700"
