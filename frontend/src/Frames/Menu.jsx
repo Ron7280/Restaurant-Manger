@@ -9,6 +9,7 @@ import {
   FaMapMarkedAlt,
 } from "react-icons/fa";
 import { Outlet } from "react-router-dom";
+import { HiBuildingStorefront } from "react-icons/hi2";
 
 import SideBar from "./SideBar";
 
@@ -45,20 +46,26 @@ const Menu = ({ role = "admin" }) => {
         {
           text1: "View Orders",
           text2: "See all orders",
-          nav: "/menu/orders",
+          nav: "/menu/viewOrders",
           icon: <FaReceipt size={30} />,
         },
         {
           text1: "Assign Deliveries",
           text2: "Manage drivers",
-          nav: "/menu/deliveries",
+          nav: "/menu/assignDeliveries",
           icon: <FaTruck size={30} />,
         },
         {
           text1: "Manage Users",
           text2: "Add/edit users",
-          nav: "/menu/users",
+          nav: "/menu/manageUsers",
           icon: <FaUsers size={30} />,
+        },
+        {
+          text1: "Buy Supplies",
+          text2: "Add/edit users",
+          nav: "/menu/buySupplies",
+          icon: <HiBuildingStorefront size={30} />,
         },
       ],
       kitchen: [

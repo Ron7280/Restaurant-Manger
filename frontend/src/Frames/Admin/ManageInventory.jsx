@@ -4,6 +4,7 @@ import AddItemModal from "../../Modals/AddItemModal";
 import { API } from "../../API_URL";
 import ItemTable from "../../Components/ItemTable";
 import Header from "../../Components/Header";
+import DeleteModal from "../../Modals/DeleteModal";
 
 const ManageInventory = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -70,26 +71,40 @@ const ManageInventory = () => {
 
     const itemData = {
       name: form.name.trim(),
-      quantity: quantity,
+      quantity,
       unit: form.unit.trim(),
       category: form.category?.trim(),
       imageUrl: form.imageUrl?.trim() || null,
     };
 
+    const formData = new FormData();
+    formData.append("itemData", JSON.stringify(itemData));
+
+    if (form.imageFile) {
+      formData.append("image", form.imageFile);
+    }
+
     try {
       const response = await fetch(`${API}/inventory/add_item`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ itemData }),
+        body: formData,
       });
 
       const data = await response.json();
       if (response.ok) {
-        setInventoryItems((prevItems) => [...prevItems, data.item]);
-        alert("Item added successfully!");
+        setInventoryItems((prevItems) => [...prevItems, data]);
+        setForm({
+          name: "",
+          quantity: "",
+          unit: "",
+          category: "",
+          imageUrl: "",
+          imageFile: null,
+        });
+        setModalOpen(false);
       } else {
         alert(data.error || "Error adding item.");
       }
@@ -111,17 +126,43 @@ const ManageInventory = () => {
         setModalOpen={setModalOpen}
       />
 
-      <div className="flex flex-col gap-3 w-full h-[95%] ">
+      <div
+        className="grid grid-cols-2 gap-3 w-full h-[95%] overflow-auto 
+      scrollbar-thin scrollbar-thumb-transparent scrollbar-track-transparent"
+      >
         <ItemTable
+          title="Quantity of tools bigger then 15"
           filteredItems={filteredItems}
-          quantityFilter={50}
+          quantityFilter={15}
+          categoryFilter="tools"
           comparisonType=">"
+          fetchInventoryItems={fetchInventoryItems}
         />
 
         <ItemTable
+          title="Quantity of tools smaller then 15"
+          filteredItems={filteredItems}
+          quantityFilter={15}
+          categoryFilter="tools"
+          comparisonType="<"
+          fetchInventoryItems={fetchInventoryItems}
+        />
+        <ItemTable
+          title="Quantity of ingredient bigger then 50"
           filteredItems={filteredItems}
           quantityFilter={50}
+          categoryFilter="ingredient"
+          comparisonType=">"
+          fetchInventoryItems={fetchInventoryItems}
+        />
+
+        <ItemTable
+          title="Quantity of ingredient smaller then 50"
+          filteredItems={filteredItems}
+          quantityFilter={50}
+          categoryFilter="ingredient"
           comparisonType="<"
+          fetchInventoryItems={fetchInventoryItems}
         />
       </div>
 
