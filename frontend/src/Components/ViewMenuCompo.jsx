@@ -59,7 +59,7 @@ const ViewMenuCompo = ({ item, onAddToOrder }) => {
           onClick={() => setIsFullScreen(false)}
         >
           <img
-            src={item.imageUrl}
+            src={`${API}${item.imageUrl}`}
             alt={item.name}
             className="max-h-[90%] max-w-[90%] object-contain"
           />

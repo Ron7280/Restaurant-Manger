@@ -131,23 +131,6 @@ const ManageInventory = () => {
       scrollbar-thin scrollbar-thumb-transparent scrollbar-track-transparent"
       >
         <ItemTable
-          title="Quantity of tools bigger then 15"
-          filteredItems={filteredItems}
-          quantityFilter={15}
-          categoryFilter="tools"
-          comparisonType=">"
-          fetchInventoryItems={fetchInventoryItems}
-        />
-
-        <ItemTable
-          title="Quantity of tools smaller then 15"
-          filteredItems={filteredItems}
-          quantityFilter={15}
-          categoryFilter="tools"
-          comparisonType="<"
-          fetchInventoryItems={fetchInventoryItems}
-        />
-        <ItemTable
           title="Quantity of ingredient bigger then 50"
           filteredItems={filteredItems}
           quantityFilter={50}
@@ -161,6 +144,24 @@ const ManageInventory = () => {
           filteredItems={filteredItems}
           quantityFilter={50}
           categoryFilter="ingredient"
+          comparisonType="<"
+          fetchInventoryItems={fetchInventoryItems}
+        />
+
+        <ItemTable
+          title="Quantity of tools bigger then 15"
+          filteredItems={filteredItems}
+          quantityFilter={15}
+          categoryFilter="tools"
+          comparisonType=">"
+          fetchInventoryItems={fetchInventoryItems}
+        />
+
+        <ItemTable
+          title="Quantity of tools smaller then 15"
+          filteredItems={filteredItems}
+          quantityFilter={15}
+          categoryFilter="tools"
           comparisonType="<"
           fetchInventoryItems={fetchInventoryItems}
         />
