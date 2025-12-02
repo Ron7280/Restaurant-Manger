@@ -13,7 +13,7 @@ import { HiBuildingStorefront } from "react-icons/hi2";
 
 import SideBar from "./SideBar";
 
-const Menu = ({ role = "customer" }) => {
+const Menu = ({ role = "admin" }) => {
   const roleOptions = useMemo(() => {
     const options = {
       customer: [

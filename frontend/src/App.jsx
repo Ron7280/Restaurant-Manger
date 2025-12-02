@@ -34,15 +34,17 @@ function App() {
             <Route element={<PrivateRoute />}>
               <Route path="/menu" element={<Menu />}>
                 <Route index element={<MainDashboard />} />
+
                 <Route path="manage" element={<ManageMenu />} />
                 <Route path="inventory" element={<ManageInventory />} />
+                <Route path="viewOrders" element={<ViewOrders />} />
+                <Route path="assignDeliveries" element={<AssignDeliveries />} />
+                <Route path="manageUsers" element={<ManageUsers />} />
+                <Route path="buySupplies" element={<BuySupplies />} />
+
                 <Route path="viewMenu" element={<ViewMenu />} />
                 <Route path="orderPage" element={<OrderPage />} />
                 <Route path="myOrders" element={<MyOrders />} />
-                <Route path="manageUsers" element={<ManageUsers />} />
-                <Route path="assignDeliveries" element={<AssignDeliveries />} />
-                <Route path="viewOrders" element={<ViewOrders />} />
-                <Route path="buySupplies" element={<BuySupplies />} />
               </Route>
             </Route>
           </Routes>

@@ -15,6 +15,7 @@ const BuySupplies = () => {
         searchQuery={searchQuery}
         handleSearchChange={handleSearchChange}
         setModalOpen={setModalOpen}
+        button={true}
       />
     </div>
   );

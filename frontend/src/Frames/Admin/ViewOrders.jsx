@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import Header from "../../Components/Header";
 import { FaReceipt } from "react-icons/fa";
 import { API } from "../../API_URL";
+import * as XLSX from "xlsx";
+import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 
 const ViewOrders = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -10,6 +12,13 @@ const ViewOrders = () => {
   const [error, setError] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const token = localStorage.getItem("token");
+
+  const exportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(filteredOrders);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Orders");
+    XLSX.writeFile(workbook, "orders.xlsx");
+  };
 
   const fetchOrders = async () => {
     try {
@@ -23,7 +32,6 @@ const ViewOrders = () => {
       if (!res.ok) throw new Error(`Failed to fetch orders: ${res.status}`);
       const data = await res.json();
       setOrders(data);
-      console.log("data --> ", data);
     } catch (err) {
       setError(err.message || "Unknown error");
     } finally {
@@ -37,19 +45,21 @@ const ViewOrders = () => {
 
   const filteredOrders = useMemo(() => {
     if (!searchQuery) return orders;
+    const searchLower = searchQuery.toLowerCase();
     return orders.filter((order) => {
       const created = new Date(order.createdAt);
-      const date = created.toLocaleDateString();
-      const time = created.toLocaleTimeString();
+      const createdAt = created.toLocaleDateString(); // Convert createdAt to a readable format
+      const serialNum = order.serialNum.toLowerCase();
+      const type = order.type.toLowerCase();
       const total = order.totalPrice.toFixed(2);
       const status = order.status.toLowerCase();
-      const searchLower = searchQuery.toLowerCase();
 
       return (
-        date.includes(searchLower) ||
-        time.includes(searchLower) ||
+        serialNum.includes(searchLower) ||
+        type.includes(searchLower) ||
         total.includes(searchLower) ||
-        status.includes(searchLower)
+        status.includes(searchLower) ||
+        createdAt.includes(searchLower)
       );
     });
   }, [searchQuery, orders]);
@@ -60,7 +70,10 @@ const ViewOrders = () => {
     );
   if (error) return <div className="text-red-600 p-4">{error}</div>;
 
-  const handleSearchChange = () => {};
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
   return (
     <div className="p-3 h-full w-full flex flex-col gap-3">
       <Header
@@ -69,7 +82,50 @@ const ViewOrders = () => {
         searchQuery={searchQuery}
         handleSearchChange={handleSearchChange}
         setModalOpen={setModalOpen}
+        button={false}
       />
+      <div className="overflow-x-auto">
+        {filteredOrders.length === 0 ? (
+          <div className="text-center text-gray-500">No orders found.</div>
+        ) : (
+          <table className="min-w-full font-semibold text-black bg-white rounded-lg table-auto">
+            <thead className="bg-mainColor text-white">
+              <tr>
+                <th className="p-2 w-[15%] text-left">Serial number</th>
+                <th className="p-2 w-[20%] text-left">Type</th>
+                <th className="p-2 w-[20%] text-left">Total price</th>
+                <th className="p-2 w-[20%] text-left">Status</th>
+                <th className="p-2 w-[15%] text-left">created at</th>
+                <th className="p-2 w-[10%]">
+                  <div className="flex items-center justify-center gap-5 w-full">
+                    Actions
+                    <PiMicrosoftExcelLogoFill
+                      onClick={exportToExcel}
+                      className="cursor-pointer"
+                      size={25}
+                    />
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredOrders.map((order) => {
+                const createdAt = order.createdAt.split("T")[0];
+                return (
+                  <tr key={order.id} className="border-t">
+                    <td className="p-2">{order.serialNum}</td>
+                    <td className="p-2 capitalize">{order.type}</td>
+                    <td className="p-2">${order.totalPrice}</td>
+                    <td className="p-2 capitalize">{order.status}</td>
+                    <td className="p-2 ">{createdAt}</td>
+                    <td className="p-2 ">button button</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 };

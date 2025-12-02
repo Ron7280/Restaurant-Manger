@@ -6,6 +6,7 @@ const Header = ({
   setModalOpen,
   icon: Icon,
   title,
+  button,
 }) => {
   return (
     <div className="flex items-center h-[5%] justify-between">
@@ -27,14 +28,15 @@ const Header = ({
           />
           <FaSearch className="text-emerald-400" />
         </div>
-
-        <button
-          onClick={() => setModalOpen(true)}
-          className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-mainColor text-white
+        {button && (
+          <button
+            onClick={() => setModalOpen(true)}
+            className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-mainColor text-white
             rounded-lg shadow-md shadow-black p-2"
-        >
-          <FaPlus /> Add Item
-        </button>
+          >
+            <FaPlus /> Add Item
+          </button>
+        )}
       </div>
     </div>
   );

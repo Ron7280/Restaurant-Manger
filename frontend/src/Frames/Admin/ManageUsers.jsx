@@ -15,6 +15,7 @@ const ManageUsers = () => {
         searchQuery={searchQuery}
         handleSearchChange={handleSearchChange}
         setModalOpen={setModalOpen}
+        button={true}
       />
     </div>
   );

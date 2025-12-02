@@ -178,6 +178,7 @@ const ManageMenu = () => {
         searchQuery={search}
         handleSearchChange={(e) => setSearch(e.target.value)}
         setModalOpen={openCreate}
+        button={true}
       />
 
       {loading && (
