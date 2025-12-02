@@ -4,7 +4,7 @@ require("dotenv").config();
 const router = express.Router();
 const prisma = require("../prismaClient.js");
 
-// router.post("/signup", async (req, res) => {
+// router.post("/login", async (req, res) => {
 //   const { username, fname, lname, password } = req.body;
 
 //   if (!username || !fname || !lname || !password) {

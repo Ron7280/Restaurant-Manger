@@ -56,6 +56,8 @@ model Order {
   status     String      @default("pending") 
   totalPrice Float
   createdAt  DateTime    @default(now())
+  serialNum  String      @unique      
+  type  String
   orderItems OrderItem[]
   delivery   Delivery?
 }

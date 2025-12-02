@@ -5,6 +5,7 @@ import { FaDollarSign } from "react-icons/fa";
 import { MdOutlineAccessTimeFilled } from "react-icons/md";
 import { GiMeal } from "react-icons/gi";
 import { TbListDetails } from "react-icons/tb";
+import { FaReceipt } from "react-icons/fa6";
 import { GrStatusInfo } from "react-icons/gr";
 import { API } from "../API_URL";
 
@@ -39,7 +40,9 @@ const MyOrderCompo = ({ order, fetchOrders }) => {
       <div className="flex justify-between items-center">
         <div className="text-gray-700 w-full gap-1 flex flex-col font-semibold">
           <div className="flex justify-between w-full items-center">
-            <div className="flex items-center gap-1">Order ID :{order.id}</div>
+            <div className="flex items-center gap-1">
+              <FaReceipt size={20} /> Order Num : {order.serialNum}
+            </div>
 
             <AnimatedButton
               func={() => deleteOrder(order.id)}
