@@ -172,4 +172,25 @@ router.delete("/delete_my_order", authenticateToken, async (req, res) => {
   }
 });
 
+router.post("/assign_delivery", authenticateToken, async (req, res) => {
+  try {
+    const { orderId, userId } = req.body;
+
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (!user || user.role !== "delivery") {
+      return res.status(400).json({ error: "Invalid delivery user" });
+    }
+
+    const order = await prisma.order.update({
+      where: { id: orderId },
+      data: { assignedto: userId },
+    });
+
+    res.json({ success: true, order });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to assign delivery" });
+  }
+});
+
 module.exports = router;

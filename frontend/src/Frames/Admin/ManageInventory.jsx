@@ -4,7 +4,6 @@ import AddItemModal from "../../Modals/AddItemModal";
 import { API } from "../../API_URL";
 import ItemTable from "../../Components/ItemTable";
 import Header from "../../Components/Header";
-import DeleteModal from "../../Modals/DeleteModal";
 
 const ManageInventory = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -132,11 +131,11 @@ const ManageInventory = () => {
       scrollbar-thin scrollbar-thumb-transparent scrollbar-track-transparent"
       >
         <ItemTable
-          title="Quantity of ingredient bigger then 50"
+          title="Quantity of ingredient equal or bigger then 50"
           filteredItems={filteredItems}
           quantityFilter={50}
           categoryFilter="ingredient"
-          comparisonType=">"
+          comparisonType=">="
           fetchInventoryItems={fetchInventoryItems}
         />
 
@@ -150,11 +149,11 @@ const ManageInventory = () => {
         />
 
         <ItemTable
-          title="Quantity of tools bigger then 15"
+          title="Quantity of tools equal or bigger then 15"
           filteredItems={filteredItems}
           quantityFilter={15}
           categoryFilter="tools"
-          comparisonType=">"
+          comparisonType=">="
           fetchInventoryItems={fetchInventoryItems}
         />
 

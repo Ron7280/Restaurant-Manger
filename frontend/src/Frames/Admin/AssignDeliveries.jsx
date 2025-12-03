@@ -1,12 +1,106 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import Header from "../../Components/Header";
 import { FaTruck } from "react-icons/fa";
+import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
+import { delivery_orders_context, users_context } from "../../Contexts";
+import { API } from "../../API_URL";
 
 const AssignDeliveries = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [users, setUsers] = useState([]);
+  const token = localStorage.getItem("token");
+  const [delivery_orders, setDelivery_orders] = useContext(
+    delivery_orders_context
+  );
 
-  const handleSearchChange = () => {};
+  const exportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(filteredOrders);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Orders");
+    XLSX.writeFile(workbook, "orders.xlsx");
+  };
+
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const res = await fetch(`${API}/users/all_users`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) throw new Error(`Failed to fetch users: ${res.status}`);
+      const data = await res.json();
+      setUsers(data);
+    } catch (err) {
+      setError(err.message || "Unknown error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const filteredOrders = useMemo(() => {
+    if (!searchQuery) return delivery_orders;
+    const searchLower = searchQuery.toLowerCase();
+    return delivery_orders.filter((order) => {
+      const created = new Date(order.createdAt);
+      const createdAt = created.toLocaleDateString();
+      const serialNum = order.serialNum.toLowerCase();
+      const type = order.type.toLowerCase();
+      const total = order.totalPrice.toFixed(2);
+      const status = order.status.toLowerCase();
+
+      return (
+        serialNum.includes(searchLower) ||
+        type.includes(searchLower) ||
+        total.includes(searchLower) ||
+        status.includes(searchLower) ||
+        createdAt.includes(searchLower)
+      );
+    });
+  }, [searchQuery, delivery_orders]);
+
+  if (loading)
+    return (
+      <div className="p-4 text-center text-gray-600">Loading orders...</div>
+    );
+  if (error) return <div className="text-red-600 p-4">{error}</div>;
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleAssign = async (orderId, userId) => {
+    try {
+      const res = await fetch(`${API}/order/assign_delivery`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ orderId, userId }),
+      });
+
+      if (!res.ok) throw new Error("Failed to assign delivery");
+
+      setDelivery_orders((prev) =>
+        prev.map((order) =>
+          order.id === orderId ? { ...order, assignedTo: userId } : order
+        )
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className="p-3 h-full w-full flex flex-col gap-3">
       <Header
@@ -17,6 +111,78 @@ const AssignDeliveries = () => {
         setModalOpen={setModalOpen}
         button={true}
       />
+
+      <div className="overflow-x-auto h-[95%]">
+        {filteredOrders.length === 0 ? (
+          <div className="text-center text-gray-500">No orders found.</div>
+        ) : (
+          <table className="min-w-full font-semibold text-black bg-white rounded-lg table-auto">
+            <thead className="bg-mainColor text-white">
+              <tr>
+                <th className="p-2 w-[15%] text-left">Serial number</th>
+                <th className="p-2 w-[10%] text-left">Type</th>
+                <th className="p-2 w-[15%] text-left">Total price</th>
+                <th className="p-2 w-[15%] text-left">Status</th>
+                <th className="p-2 w-[20%] text-left">Deleivery Guy</th>
+                <th className="p-2 w-[15%] text-left">created at</th>
+                <th className="p-2 w-[10%]">
+                  <div className="flex items-center justify-center gap-5 w-full">
+                    Actions
+                    <PiMicrosoftExcelLogoFill
+                      onClick={exportToExcel}
+                      className="cursor-pointer"
+                      size={25}
+                    />
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredOrders
+                .filter((order) => order.type === "delivery")
+                .map((order, index) => {
+                  const createdAt = order.createdAt.split("T")[0];
+                  return (
+                    <tr
+                      key={order.id}
+                      className={`${index % 2 == 0 ? "bg-green-100" : ""}`}
+                    >
+                      <td className="p-2">{order.serialNum}</td>
+                      <td className="p-2 capitalize">{order.type}</td>
+                      <td className="p-2">${order.totalPrice}</td>
+                      <td className="p-2 capitalize">{order.status}</td>
+                      <td className="p-2">
+                        <select
+                          className="bg-transparent w-[75%] outline-none"
+                          value={order.assignedto || ""}
+                          onChange={(e) =>
+                            handleAssign(order.id, e.target.value)
+                          }
+                        >
+                          <option value="">Select</option>
+                          {users
+                            .filter((guy) => guy.role === "delivery")
+                            .map((guy) => (
+                              <option
+                                key={guy.id}
+                                value={guy.id}
+                                className="font-semibold"
+                              >
+                                {guy.name}
+                              </option>
+                            ))}
+                        </select>
+                      </td>
+
+                      <td className="p-2 ">{createdAt}</td>
+                      <td className="p-2 ">button button</td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 };

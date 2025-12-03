@@ -38,6 +38,10 @@ const ItemTable = ({
     switch (comparisonType) {
       case ">":
         return parseFloat(itemQuantity) > quantityFilter;
+      case ">=":
+        return parseFloat(itemQuantity) >= quantityFilter;
+      case "<=":
+        return parseFloat(itemQuantity) >= quantityFilter;
       case "<":
         return parseFloat(itemQuantity) < quantityFilter;
       case "=":
@@ -195,7 +199,7 @@ const ItemTable = ({
                   <td className="p-2">{item.category}</td>
                   <td
                     className={`p-2 ${
-                      item.quantity <= quantityFilter ? "text-Red" : ""
+                      item.quantity < quantityFilter ? "text-Red" : ""
                     }`}
                   >
                     {item.quantity}

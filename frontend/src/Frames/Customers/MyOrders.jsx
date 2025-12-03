@@ -16,6 +16,7 @@ const MyOrders = () => {
       setError(null);
       const res = await fetch(`${API}/order/my_orders`, {
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });

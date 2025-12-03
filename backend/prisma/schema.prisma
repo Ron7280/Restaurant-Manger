@@ -11,13 +11,15 @@ datasource db {
 model User {
   id           String      @id @default(uuid())
   name         String
-  username     String   @unique
+  username     String      @unique
   password     String
-  role         String   
+  role         String
+  banned       Boolean     @default(false)
+  imageUrl     String?     
+  createdAt    DateTime    @default(now())
   orders       Order[]
-  deliveries   Delivery[] 
+  deliveries   Delivery[]
 }
-
 
 model MenuItem {
   id          String       @id @default(uuid())
@@ -57,7 +59,8 @@ model Order {
   totalPrice Float
   createdAt  DateTime    @default(now())
   serialNum  String      @unique      
-  type  String
+  type       String
+  assignedto String?
   orderItems OrderItem[]
   delivery   Delivery?
 }

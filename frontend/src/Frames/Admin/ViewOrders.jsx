@@ -1,9 +1,10 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import Header from "../../Components/Header";
 import { FaReceipt } from "react-icons/fa";
 import { API } from "../../API_URL";
 import * as XLSX from "xlsx";
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
+import { delivery_orders_context } from "../../Contexts";
 
 const ViewOrders = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -11,6 +12,11 @@ const ViewOrders = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+
+  const [delivery_orders, setDelivery_orders] = useContext(
+    delivery_orders_context
+  );
+
   const token = localStorage.getItem("token");
 
   const exportToExcel = () => {
@@ -26,12 +32,15 @@ const ViewOrders = () => {
       setError(null);
       const res = await fetch(`${API}/order/all_orders`, {
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
       if (!res.ok) throw new Error(`Failed to fetch orders: ${res.status}`);
       const data = await res.json();
+
       setOrders(data);
+      setDelivery_orders(data);
     } catch (err) {
       setError(err.message || "Unknown error");
     } finally {
@@ -84,7 +93,7 @@ const ViewOrders = () => {
         setModalOpen={setModalOpen}
         button={false}
       />
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto h-[95%]">
         {filteredOrders.length === 0 ? (
           <div className="text-center text-gray-500">No orders found.</div>
         ) : (
@@ -109,10 +118,13 @@ const ViewOrders = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredOrders.map((order) => {
+              {filteredOrders.map((order, index) => {
                 const createdAt = order.createdAt.split("T")[0];
                 return (
-                  <tr key={order.id} className="border-t">
+                  <tr
+                    key={order.id}
+                    className={`${index % 2 == 0 ? "bg-green-100" : ""}`}
+                  >
                     <td className="p-2">{order.serialNum}</td>
                     <td className="p-2 capitalize">{order.type}</td>
                     <td className="p-2">${order.totalPrice}</td>
