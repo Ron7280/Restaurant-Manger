@@ -20,6 +20,8 @@ import ViewOrders from "./Frames/Admin/ViewOrders";
 import BuySupplies from "./Frames/Admin/BuySupplies";
 import TrackMap from "./Frames/Delivery/TrackMap";
 import AssignedDeliveries from "./Frames/Delivery/AssignedDeliveries";
+import SignUp from "./Frames/SignUp";
+import Background from "./Frames/Background";
 
 function App() {
   const [changeTheme, setChangeTheme] = useState(false);
@@ -34,7 +36,10 @@ function App() {
           >
             <Routes>
               <Route element={<PublicRoute />}>
-                <Route path="/" element={<Login />} />
+                <Route path="/" element={<Background />}>
+                  <Route index element={<Login />} />
+                  <Route path="/signUp" element={<SignUp />} />
+                </Route>
               </Route>
 
               <Route element={<PrivateRoute />}>

@@ -13,6 +13,7 @@ model User {
   name         String
   username     String      @unique
   password     String
+  mobile       String
   role         String
   banned       Boolean     @default(false)
   imageUrl     String?     
