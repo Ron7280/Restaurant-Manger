@@ -64,49 +64,6 @@ router.post("/order_now", authenticateToken, async (req, res) => {
   }
 });
 
-router.post("/delivery", authenticateToken, async (req, res) => {
-  try {
-    const { items, totalPrice, type } = req.body;
-    const userId = req.user.id;
-
-    if (!userId) {
-      return res.status(400).json({ error: "User not authenticated" });
-    }
-
-    const serialNum = await generateUniqueSerialNum();
-
-    const order = await prisma.order.create({
-      data: {
-        userId,
-        totalPrice,
-        type,
-        serialNum,
-        status: "pending",
-        orderItems: {
-          create: items.map((item) => ({
-            menuItemId: item.menuItemId,
-            quantity: item.quantity,
-          })),
-        },
-      },
-    });
-
-    const delivery = await prisma.delivery.create({
-      data: {
-        orderId: order.id,
-        status: "pending",
-        lat: null,
-        lng: null,
-      },
-    });
-
-    res.json({ success: true, msg: "Your delivery order has been sent" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to create delivery order" });
-  }
-});
-
 router.get("/my_orders", authenticateToken, async (req, res) => {
   try {
     const userId = req.user.id;
@@ -172,6 +129,50 @@ router.delete("/delete_my_order", authenticateToken, async (req, res) => {
   }
 });
 
+router.post("/delivery", authenticateToken, async (req, res) => {
+  try {
+    const { items, totalPrice, type, mobile, lat, lng } = req.body;
+    const userId = req.user.id;
+
+    if (!userId) {
+      return res.status(400).json({ error: "User not authenticated" });
+    }
+
+    const serialNum = await generateUniqueSerialNum();
+
+    const order = await prisma.order.create({
+      data: {
+        userId,
+        totalPrice,
+        type,
+        serialNum,
+        status: "pending",
+        orderItems: {
+          create: items.map((item) => ({
+            menuItemId: item.menuItemId,
+            quantity: item.quantity,
+          })),
+        },
+      },
+    });
+
+    const delivery = await prisma.delivery.create({
+      data: {
+        orderId: order.id,
+        status: "pending",
+        mobile,
+        lat,
+        lng,
+      },
+    });
+
+    res.json({ success: true, msg: "Your delivery order has been sent" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to create delivery order" });
+  }
+});
+
 router.post("/assign_delivery", authenticateToken, async (req, res) => {
   try {
     const { orderId, userId } = req.body;
@@ -208,6 +209,7 @@ router.get("/my_delivery", authenticateToken, async (req, res) => {
       include: {
         order: {
           include: {
+            customer: true,
             orderItems: {
               include: {
                 menuItem: true,
@@ -227,6 +229,8 @@ router.get("/my_delivery", authenticateToken, async (req, res) => {
       lat: d.lat,
       lng: d.lng,
       updatedAt: d.updatedAt,
+      customerName: d.order.customer.name,
+      customerMobile: d.order.customer.mobile,
       items: d.order.orderItems.map((oi) => ({
         id: oi.id,
         name: oi.menuItem.name,

@@ -13,8 +13,6 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
-  const [fname, setFname] = useState("");
-  const [lname, setLname] = useState("");
   const [passwordErr, setPasswordErr] = useState(false);
   const [credentialsErr, setCredentialsErr] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -46,7 +44,7 @@ const Login = () => {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({ username, fname, lname, password }),
+        body: JSON.stringify({ username, password }),
       });
 
       const data = await res.json();
@@ -58,8 +56,9 @@ const Login = () => {
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("userId", data.userId);
-      localStorage.setItem("role", data.role);
       localStorage.setItem("username", data.username);
+      localStorage.setItem("role", data.role);
+      localStorage.setItem("mobile", data.mobile);
       login(data.token);
       notifyS("Logged in successfully!");
     } catch (err) {

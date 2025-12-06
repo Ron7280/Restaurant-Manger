@@ -12,18 +12,18 @@ const DeliveryCard = ({ delivery }) => {
   const navigate = useNavigate();
 
   const getAddress = async () => {
-    // if (delivery.lat && delivery.lng) {
-    try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?lat=${40.800298}&lon=${-73.959341}&format=json`
-      );
-      const data = await response.json();
-      setAddress(data.display_name || "Unknown Address");
-    } catch (error) {
-      console.error("Error fetching address:", error);
-      setAddress("Unable to fetch address");
+    if (delivery.lat && delivery.lng) {
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?lat=${delivery.lat}&lon=${delivery.lng}&format=json`
+        );
+        const data = await response.json();
+        setAddress(data.display_name || "Unknown Address");
+      } catch (error) {
+        console.error("Error fetching address:", error);
+        setAddress("Unable to fetch address");
+      }
     }
-    // }
   };
 
   useEffect(() => {
@@ -69,8 +69,11 @@ const DeliveryCard = ({ delivery }) => {
             onClick={() =>
               navigate("/menu/trackMap", {
                 state: {
-                  lat: "40.800298",
-                  lng: "-73.959341",
+                  lat: delivery.lat,
+                  lng: delivery.lng,
+                  name: delivery.customerName,
+                  mobile: delivery.customerMobile,
+                  serialNum: delivery.serialNum,
                 },
               })
             }

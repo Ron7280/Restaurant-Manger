@@ -63,6 +63,7 @@ model Order {
   type       String
   orderItems OrderItem[]
   delivery   Delivery?
+  
 }
 
 model OrderItem {
@@ -84,6 +85,7 @@ model Delivery {
   lat       Float?
   lng       Float?
   updatedAt DateTime @updatedAt
+  mobile    String
 }
 
 

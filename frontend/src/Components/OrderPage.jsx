@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { MdDeliveryDining } from "react-icons/md";
 import { GiMeal } from "react-icons/gi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { IoIosRemove } from "react-icons/io";
 import { API } from "../API_URL";
@@ -10,8 +10,29 @@ const OrderPage = () => {
   const location = useLocation();
   const order = location.state?.order || [];
   const [orderList, setOrderList] = useState(order);
+  // const [coords, setCoords] = useState({ lat: null, lng: null });
   const token = localStorage.getItem("token");
+  const mobile = localStorage.getItem("mobile");
+
   const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   if ("geolocation" in navigator) {
+  //     navigator.geolocation.getCurrentPosition(
+  //       (position) => {
+  //         setCoords({
+  //           lat: position.coords.latitude,
+  //           lng: position.coords.longitude,
+  //         });
+  //       },
+  //       (error) => {
+  //         console.error("Failed to get location:", error);
+  //       }
+  //     );
+  //   } else {
+  //     console.error("Geolocation not supported");
+  //   }
+  // }, []);
 
   const increaseQty = (id) => {
     setOrderList((prev) =>
@@ -55,29 +76,42 @@ const OrderPage = () => {
   };
 
   const sendDelivery = async () => {
-    const res = await fetch(`${API}/order/delivery`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        items: orderList.map((i) => ({
-          menuItemId: i.id,
-          quantity: i.qty,
-        })),
-        totalPrice,
-        type: "delivery",
-      }),
-    });
-    const data = await res.json();
+    // if (!coords.lat || !coords.lng) {
+    //   alert("Could not get your location. Please allow location access.");
+    //   return;
+    // }
 
-    if (data.success) {
-      navigate("/menu/viewMenu");
-      return;
+    try {
+      const res = await fetch(`${API}/order/delivery`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          items: orderList.map((i) => ({
+            menuItemId: i.id,
+            quantity: i.qty,
+          })),
+          totalPrice,
+          type: "delivery",
+          mobile,
+          lat: Number((Math.random() * 180 - 90).toFixed(6)),
+          lng: Number((Math.random() * 360 - 180).toFixed(6)),
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        navigate("/menu/viewMenu");
+        return;
+      }
+
+      if (!res.ok) throw new Error("Failed to send delivery order");
+    } catch (err) {
+      console.error(err);
     }
-
-    if (!res.ok) throw new Error("Failed to send delivery order");
   };
 
   const totalPrice = orderList.reduce(

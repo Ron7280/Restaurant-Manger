@@ -63,7 +63,7 @@ const FitMap = ({ coords, restaurant }) => {
 
 const TrackMap = () => {
   const { state } = useLocation();
-  const { lat, lng, serialNum } = state || {};
+  const { lat, lng, serialNum, name, mobile } = state || {};
   const restaurant = { lat: 40.78816, lng: -73.9555 };
   const [routeCoords, setRouteCoords] = useState([]);
   const [eta, setEta] = useState(null);
@@ -162,9 +162,7 @@ const TrackMap = () => {
               </div>
               Name
             </div>
-            <div className="text-mainColor2 font-semibold text-xl">
-              Rani Alsaegh
-            </div>
+            <div className="text-mainColor2 font-semibold text-xl">{name}</div>
           </div>
           <div className="w-[40%]">
             <div className="flex items-center gap-1 font-bold text-lg text-mainColor2">
@@ -177,7 +175,7 @@ const TrackMap = () => {
               Number
             </div>
             <div className="flex items-center gap-2 text-mainColor2 font-semibold text-xl">
-              123456789
+              {mobile}
               <button
                 className="bg-mainColor w-[20%] items-center justify-center gap-2 
               rounded-full shadow-black shadow-md text-white flex"

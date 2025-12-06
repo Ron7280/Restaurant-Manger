@@ -8,12 +8,14 @@ import {
   FaClipboardList,
   FaMapMarkedAlt,
 } from "react-icons/fa";
-import { Outlet } from "react-router-dom";
 import { HiBuildingStorefront } from "react-icons/hi2";
-
+import { Outlet } from "react-router-dom";
 import SideBar from "./SideBar";
 
-const Menu = ({ role = "customer" }) => {
+const Menu = ({ roleProp }) => {
+  const role = roleProp || localStorage.getItem("role");
+  // const role = "delivery";
+
   const roleOptions = useMemo(() => {
     const options = {
       customer: [
@@ -109,7 +111,6 @@ const Menu = ({ role = "customer" }) => {
   return (
     <div className="h-screen w-full flex bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-700 text-slate-100">
       <SideBar roleOptions={roleOptions} />
-
       <Outlet context={{ role, roleOptions }} />
     </div>
   );

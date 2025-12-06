@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Header from "../../Components/Header";
 import { FaTruck } from "react-icons/fa";
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
-import { delivery_orders_context } from "../../Contexts";
 import { API } from "../../API_URL";
+import * as XLSX from "xlsx";
 
 const AssignDeliveries = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -11,18 +11,31 @@ const AssignDeliveries = () => {
   const [error, setError] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [users, setUsers] = useState([]);
+  const [deliveries, setDeliveries] = useState([]);
   const token = localStorage.getItem("token");
-  const [delivery_orders, setDelivery_orders] = useContext(
-    delivery_orders_context
-  );
 
-  const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(filteredOrders);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Orders");
-    XLSX.writeFile(workbook, "orders.xlsx");
+  // Fetch orders from API
+  const fetchOrders = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const res = await fetch(`${API}/order/all_orders`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) throw new Error(`Failed to fetch orders: ${res.status}`);
+      const data = await res.json();
+      setDeliveries(data);
+    } catch (err) {
+      setError(err.message || "Unknown error");
+    } finally {
+      setLoading(false);
+    }
   };
 
+  // Fetch delivery users
   const fetchUsers = async () => {
     try {
       setLoading(true);
@@ -43,6 +56,7 @@ const AssignDeliveries = () => {
     }
   };
 
+  // Assign a delivery guy to an order
   const handleAssign = async (orderId, userId) => {
     try {
       const res = await fetch(`${API}/order/assign_delivery`, {
@@ -55,10 +69,10 @@ const AssignDeliveries = () => {
       });
 
       if (!res.ok) throw new Error("Failed to assign delivery");
-
       const data = await res.json();
 
-      setDelivery_orders((prev) =>
+      // Update deliveries state
+      setDeliveries((prev) =>
         prev.map((order) =>
           order.id === orderId
             ? { ...order, driverId: userId, driverName: data.driverName }
@@ -70,14 +84,24 @@ const AssignDeliveries = () => {
     }
   };
 
+  // Export filtered orders to Excel
+  const exportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(filteredOrders);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Orders");
+    XLSX.writeFile(workbook, "orders.xlsx");
+  };
+
   useEffect(() => {
     fetchUsers();
+    fetchOrders();
   }, []);
 
+  // Filter orders based on search query
   const filteredOrders = useMemo(() => {
-    if (!searchQuery) return delivery_orders;
+    if (!searchQuery) return deliveries;
     const searchLower = searchQuery.toLowerCase();
-    return delivery_orders.filter((order) => {
+    return deliveries.filter((order) => {
       const created = new Date(order.createdAt);
       const createdAt = created.toLocaleDateString();
       const serialNum = order.serialNum.toLowerCase();
@@ -93,7 +117,7 @@ const AssignDeliveries = () => {
         createdAt.includes(searchLower)
       );
     });
-  }, [searchQuery, delivery_orders]);
+  }, [searchQuery, deliveries]);
 
   if (loading)
     return (
@@ -101,9 +125,7 @@ const AssignDeliveries = () => {
     );
   if (error) return <div className="text-red-600 p-4">{error}</div>;
 
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
+  const handleSearchChange = (e) => setSearchQuery(e.target.value);
 
   return (
     <div className="p-3 h-full w-full flex flex-col gap-3">
@@ -150,7 +172,7 @@ const AssignDeliveries = () => {
                   return (
                     <tr
                       key={order.id}
-                      className={`${index % 2 == 0 ? "bg-green-100" : ""}`}
+                      className={`${index % 2 === 0 ? "bg-green-100" : ""}`}
                     >
                       <td className="p-2">{order.serialNum}</td>
                       <td className="p-2 capitalize">{order.type}</td>
@@ -168,17 +190,12 @@ const AssignDeliveries = () => {
                           {users
                             .filter((guy) => guy.role === "delivery")
                             .map((guy) => (
-                              <option
-                                key={guy.id}
-                                value={guy.id}
-                                className="font-semibold"
-                              >
+                              <option key={guy.id} value={guy.id}>
                                 {guy.name}
                               </option>
                             ))}
                         </select>
                       </td>
-
                       <td className="p-2">{createdAt}</td>
                       <td className="p-2">button button</td>
                     </tr>
