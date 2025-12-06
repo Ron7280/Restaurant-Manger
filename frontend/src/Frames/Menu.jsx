@@ -13,7 +13,7 @@ import { HiBuildingStorefront } from "react-icons/hi2";
 
 import SideBar from "./SideBar";
 
-const Menu = ({ role = "admin" }) => {
+const Menu = ({ role = "customer" }) => {
   const roleOptions = useMemo(() => {
     const options = {
       customer: [
@@ -92,19 +92,13 @@ const Menu = ({ role = "admin" }) => {
         {
           text1: "Assigned Deliveries",
           text2: "Orders to deliver",
-          nav: "/deliveries/assigned",
+          nav: "/menu/assigned",
           icon: <FaTruck size={30} />,
-        },
-        {
-          text1: "Update Delivery Status",
-          text2: "Mark progress",
-          nav: "/deliveries/update",
-          icon: <FaClipboardList size={30} />,
         },
         {
           text1: "Track Map",
           text2: "See delivery locations",
-          nav: "/deliveries/map",
+          nav: "/menu/trackMap",
           icon: <FaMapMarkedAlt size={30} />,
         },
       ],

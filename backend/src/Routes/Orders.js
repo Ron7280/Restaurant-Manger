@@ -94,7 +94,7 @@ router.post("/delivery", authenticateToken, async (req, res) => {
     const delivery = await prisma.delivery.create({
       data: {
         orderId: order.id,
-        status: "assigned",
+        status: "pending",
         lat: null,
         lng: null,
       },
@@ -183,13 +183,65 @@ router.post("/assign_delivery", authenticateToken, async (req, res) => {
 
     const order = await prisma.order.update({
       where: { id: orderId },
-      data: { assignedto: userId },
+      data: { status: "assigned" },
     });
 
-    res.json({ success: true, order });
+    const delivery = await prisma.delivery.update({
+      where: { orderId: orderId },
+      data: { driverId: userId, status: "assigned" },
+    });
+
+    res.json({ success: true, driverName: user.name });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to assign delivery" });
+  }
+});
+
+router.get("/my_delivery", authenticateToken, async (req, res) => {
+  try {
+    const driverId = req.user.id;
+
+    const deliveries = await prisma.delivery.findMany({
+      where: { driverId },
+      orderBy: { updatedAt: "desc" },
+      include: {
+        order: {
+          include: {
+            orderItems: {
+              include: {
+                menuItem: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const result = deliveries.map((d) => ({
+      id: d.id,
+      orderId: d.orderId,
+      serialNum: d.order.serialNum,
+      status: d.status,
+      driverId: d.driverId,
+      lat: d.lat,
+      lng: d.lng,
+      updatedAt: d.updatedAt,
+      items: d.order.orderItems.map((oi) => ({
+        id: oi.id,
+        name: oi.menuItem.name,
+        description: oi.menuItem.description,
+        price: oi.menuItem.price,
+        imageUrl: oi.menuItem.imageUrl,
+        quantity: oi.quantity,
+      })),
+      totalPrice: d.order.totalPrice,
+    }));
+
+    res.json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch deliveries" });
   }
 });
 

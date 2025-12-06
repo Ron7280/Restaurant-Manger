@@ -57,7 +57,7 @@ const ViewOrders = () => {
     const searchLower = searchQuery.toLowerCase();
     return orders.filter((order) => {
       const created = new Date(order.createdAt);
-      const createdAt = created.toLocaleDateString(); // Convert createdAt to a readable format
+      const createdAt = created.toLocaleDateString();
       const serialNum = order.serialNum.toLowerCase();
       const type = order.type.toLowerCase();
       const total = order.totalPrice.toFixed(2);

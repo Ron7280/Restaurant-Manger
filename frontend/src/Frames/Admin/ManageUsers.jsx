@@ -213,7 +213,6 @@ const ManageUsers = () => {
         )}
       </div>
 
-      {/* Edit modal */}
       {modalOpen && (
         <EditUserModal
           handleSave={handleSave}
@@ -224,13 +223,12 @@ const ManageUsers = () => {
         />
       )}
 
-      {/* Delete Confirmation Modal */}
       {confirmOpen && (
         <DeleteModal
           deletingItem={deletingItem}
           setConfirmOpen={setConfirmOpen}
           handleDelete={() => handleDeleteItem(deletingItem.id)}
-          deleting={false} // Add your deleting logic here
+          deleting={false}
         />
       )}
     </div>

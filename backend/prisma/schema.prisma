@@ -60,7 +60,6 @@ model Order {
   createdAt  DateTime    @default(now())
   serialNum  String      @unique      
   type       String
-  assignedto String?
   orderItems OrderItem[]
   delivery   Delivery?
 }

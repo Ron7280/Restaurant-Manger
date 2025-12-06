@@ -4,7 +4,6 @@ import { IoIosSave } from "react-icons/io";
 import AnimatedButton from "../Components/AnimatedButton";
 
 const EditUserModal = ({ handleSave, setModalOpen, form, setForm, saving }) => {
-  // Add a state to toggle the 'banned' status
   const [isBanned, setIsBanned] = useState(form.banned);
 
   const fields = useMemo(
@@ -31,7 +30,6 @@ const EditUserModal = ({ handleSave, setModalOpen, form, setForm, saving }) => {
     [form, setForm]
   );
 
-  // Toggle the 'banned' status
   const toggleBannedStatus = () => {
     setIsBanned((prev) => !prev);
     setForm((s) => ({ ...s, banned: !s.banned }));
@@ -67,7 +65,6 @@ const EditUserModal = ({ handleSave, setModalOpen, form, setForm, saving }) => {
             );
           })}
 
-          {/* Banned Status Toggle */}
           <div className="flex items-center gap-2">
             <input
               type="checkbox"
@@ -121,7 +118,7 @@ const EditUserModal = ({ handleSave, setModalOpen, form, setForm, saving }) => {
             </button>
 
             <AnimatedButton
-              func={() => handleSave(form)} // Pass the updated form to handleSave
+              func={() => handleSave(form)}
               color="bg-green-600"
               icon={IoIosSave}
               size={25}

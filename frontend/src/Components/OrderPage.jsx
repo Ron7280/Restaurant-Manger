@@ -5,7 +5,6 @@ import { useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { IoIosRemove } from "react-icons/io";
 import { API } from "../API_URL";
-import { BiDuplicate } from "react-icons/bi";
 
 const OrderPage = () => {
   const location = useLocation();

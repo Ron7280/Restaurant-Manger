@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import Header from "../../Components/Header";
 import { FaTruck } from "react-icons/fa";
 import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
-import { delivery_orders_context, users_context } from "../../Contexts";
+import { delivery_orders_context } from "../../Contexts";
 import { API } from "../../API_URL";
 
 const AssignDeliveries = () => {
@@ -43,6 +43,33 @@ const AssignDeliveries = () => {
     }
   };
 
+  const handleAssign = async (orderId, userId) => {
+    try {
+      const res = await fetch(`${API}/order/assign_delivery`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ orderId, userId }),
+      });
+
+      if (!res.ok) throw new Error("Failed to assign delivery");
+
+      const data = await res.json();
+
+      setDelivery_orders((prev) =>
+        prev.map((order) =>
+          order.id === orderId
+            ? { ...order, driverId: userId, driverName: data.driverName }
+            : order
+        )
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -78,29 +105,6 @@ const AssignDeliveries = () => {
     setSearchQuery(e.target.value);
   };
 
-  const handleAssign = async (orderId, userId) => {
-    try {
-      const res = await fetch(`${API}/order/assign_delivery`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ orderId, userId }),
-      });
-
-      if (!res.ok) throw new Error("Failed to assign delivery");
-
-      setDelivery_orders((prev) =>
-        prev.map((order) =>
-          order.id === orderId ? { ...order, assignedTo: userId } : order
-        )
-      );
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   return (
     <div className="p-3 h-full w-full flex flex-col gap-3">
       <Header
@@ -109,7 +113,7 @@ const AssignDeliveries = () => {
         searchQuery={searchQuery}
         handleSearchChange={handleSearchChange}
         setModalOpen={setModalOpen}
-        button={true}
+        button={false}
       />
 
       <div className="overflow-x-auto h-[95%]">
@@ -123,8 +127,8 @@ const AssignDeliveries = () => {
                 <th className="p-2 w-[10%] text-left">Type</th>
                 <th className="p-2 w-[15%] text-left">Total price</th>
                 <th className="p-2 w-[15%] text-left">Status</th>
-                <th className="p-2 w-[20%] text-left">Deleivery Guy</th>
-                <th className="p-2 w-[15%] text-left">created at</th>
+                <th className="p-2 w-[20%] text-left">Delivery Guy</th>
+                <th className="p-2 w-[15%] text-left">Created at</th>
                 <th className="p-2 w-[10%]">
                   <div className="flex items-center justify-center gap-5 w-full">
                     Actions
@@ -140,6 +144,7 @@ const AssignDeliveries = () => {
             <tbody>
               {filteredOrders
                 .filter((order) => order.type === "delivery")
+                .filter((order) => order.status !== "assigned")
                 .map((order, index) => {
                   const createdAt = order.createdAt.split("T")[0];
                   return (
@@ -154,7 +159,7 @@ const AssignDeliveries = () => {
                       <td className="p-2">
                         <select
                           className="bg-transparent w-[75%] outline-none"
-                          value={order.assignedto || ""}
+                          value={order.driverId || ""}
                           onChange={(e) =>
                             handleAssign(order.id, e.target.value)
                           }
@@ -174,8 +179,8 @@ const AssignDeliveries = () => {
                         </select>
                       </td>
 
-                      <td className="p-2 ">{createdAt}</td>
-                      <td className="p-2 ">button button</td>
+                      <td className="p-2">{createdAt}</td>
+                      <td className="p-2">button button</td>
                     </tr>
                   );
                 })}

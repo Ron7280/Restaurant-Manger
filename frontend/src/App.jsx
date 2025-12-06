@@ -18,6 +18,8 @@ import ManageUsers from "./Frames/Admin/ManageUsers";
 import AssignDeliveries from "./Frames/Admin/AssignDeliveries";
 import ViewOrders from "./Frames/Admin/ViewOrders";
 import BuySupplies from "./Frames/Admin/BuySupplies";
+import TrackMap from "./Frames/Delivery/TrackMap";
+import AssignedDeliveries from "./Frames/Delivery/AssignedDeliveries";
 
 function App() {
   const [changeTheme, setChangeTheme] = useState(false);
@@ -51,6 +53,9 @@ function App() {
                   <Route path="viewMenu" element={<ViewMenu />} />
                   <Route path="orderPage" element={<OrderPage />} />
                   <Route path="myOrders" element={<MyOrders />} />
+
+                  <Route path="assigned" element={<AssignedDeliveries />} />
+                  <Route path="trackMap" element={<TrackMap />} />
                 </Route>
               </Route>
             </Routes>
