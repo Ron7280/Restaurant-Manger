@@ -86,6 +86,8 @@ model Delivery {
   lng       Float?
   updatedAt DateTime @updatedAt
   mobile    String
+  delivered Boolean  @default(false)
+  delivered_at  DateTime?
 }
 
 

@@ -13,9 +13,12 @@ const Header = ({
   const navigate = useNavigate();
   return (
     <div className="flex items-center h-[5%] justify-between">
-      <div className="w-[50%]">
-        <div className="flex items-center gap-3 text-2xl font-semibold text-mainColor">
-          <Icon size={40} />
+      <div className="w-[35%]">
+        <div
+          className="flex items-center gap-3 text-2xl font-semibold bg-gradient-to-r
+         from-mainColor via-Indigo to-Indigo bg-clip-text text-transparent"
+        >
+          <Icon size={40} className="text-mainColor" />
           {title}
         </div>
       </div>

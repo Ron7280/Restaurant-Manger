@@ -35,7 +35,8 @@ const MyOrderCompo = ({ order, fetchOrders }) => {
     <div
       key={order.id}
       className="border rounded-xl h-fit p-4 shadow-black shadow-lg
-       transition-shadow duration-200 flex flex-col gap-3 bg-white"
+       transition-shadow duration-200 flex flex-col gap-3 bg-white
+       border-l-8 border-l-mainColor border-r-8 border-r-Indigo "
     >
       <div className="flex justify-between items-center">
         <div className="text-gray-700 w-full gap-1 flex flex-col font-semibold">

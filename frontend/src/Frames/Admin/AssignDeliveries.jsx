@@ -59,7 +59,7 @@ const AssignDeliveries = () => {
   // Assign a delivery guy to an order
   const handleAssign = async (orderId, userId) => {
     try {
-      const res = await fetch(`${API}/order/assign_delivery`, {
+      const res = await fetch(`${API}/delivery/assign_delivery`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

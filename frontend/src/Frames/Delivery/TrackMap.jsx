@@ -1,14 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Header from "../../Components/Header";
 import { FaMapMarkedAlt, FaUser } from "react-icons/fa";
 import { GiMeal } from "react-icons/gi";
-import {
-  IoRestaurant,
-  IoLocation,
-  IoHomeSharp,
-  IoCallSharp,
-} from "react-icons/io5";
-
+import { IoLocation, IoHomeSharp, IoCallSharp } from "react-icons/io5";
 import { useLocation } from "react-router-dom";
 import { IoMdTime } from "react-icons/io";
 import {
@@ -132,6 +126,38 @@ const TrackMap = () => {
     loadAddress();
   }, [lat, lng]);
 
+  const details = useMemo(
+    () => [
+      {
+        icon: <IoMdTime size={25} />,
+        title: "ETA",
+        value: eta ? `${eta} min` : "…",
+        btn: "",
+      },
+      {
+        icon: <FaUser size={25} />,
+        title: "Name",
+        value: name,
+        btn: "",
+      },
+      {
+        icon: <IoCallSharp size={25} />,
+        title: "Number",
+        value: mobile,
+        btn: (
+          <button
+            className="w-[20%] justify-center p-1 rounded-md bg-mainColor text-white
+           text-sm font-semibold hover:bg-green-700 active:scale-95 
+           transition flex items-center gap-1"
+          >
+            Call <IoCallSharp size={18} />
+          </button>
+        ),
+      },
+    ],
+    [eta, name, mobile]
+  );
+
   if (!lat || !lng)
     return (
       <div className="p-3 h-full w-full flex flex-col gap-3">
@@ -154,7 +180,6 @@ const TrackMap = () => {
           >
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-            {/* Restaurant Marker Only */}
             <Marker position={[restaurant.lat, restaurant.lng]} icon={blueIcon}>
               <Popup>Restaurant</Popup>
             </Marker>
@@ -181,67 +206,49 @@ const TrackMap = () => {
         searchBTN={false}
       />
 
-      <div
-        className="bg-gradient-to-br from-mainColor2  to-mainColor rounded-xl 
-      border border-gray-200 p-5 flex flex-col gap-6"
-      >
+      <div className="rounded-xl bg-white p-5 flex flex-col gap-6">
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <div
               className="h-9 w-9 flex items-center justify-center rounded-md
-             bg-white text-mainColor"
+             bg-gradient-to-tr from-mainColor to-Indigo text-white"
             >
               <IoHomeSharp size={22} />
             </div>
-            <span className="text-white font-semibold text-lg">
+            <div className="text-mainColor2 font-bold text-lg">
               Delivery Address
-            </span>
+            </div>
           </div>
 
-          <p className="text-gray-100 font-medium">{address || "Loading..."}</p>
+          <div className="text-mainColor2 font-medium">
+            {address || "Loading..."}
+          </div>
         </div>
 
-        {/* Info Row */}
         <div className="grid grid-cols-3 gap-4">
-          {/* ETA */}
-          <div className="border border-gray-200 rounded-lg p-4 bg-white">
-            <div className="flex items-center gap-2 mb-1">
-              <div className=" p-1 flex items-center justify-center rounded-md text-white bg-mainColor">
-                <IoMdTime size={25} />
+          {details.map((d, indes) => {
+            return (
+              <div className="border border-gray-200 rounded-lg p-3 flex flex-col gap-1 bg-gray-50">
+                <div className="flex items-center gap-2">
+                  <div
+                    className=" p-1 flex items-center justify-center rounded-md 
+                           bg-gradient-to-tr from-mainColor to-Indigo text-white"
+                  >
+                    {d.icon}
+                  </div>
+                  <div className="font-semibold text-mainColor2">{d.title}</div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="text-mainColor2 font-semibold text-lg">
+                    {d.value}
+                  </div>
+
+                  {d.btn}
+                </div>
               </div>
-              <span className="font-semibold text-gray-800">ETA</span>
-            </div>
-            <p className="text-mainColor font-bold text-xl">
-              {eta ? `${eta} min` : "…"}
-            </p>
-          </div>
-
-          <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-            <div className="flex items-center gap-2 mb-1">
-              <div className=" p-1 flex items-center justify-center rounded-md text-white bg-mainColor">
-                <FaUser size={25} />
-              </div>
-              <span className="font-semibold text-mainColor2">Name</span>
-            </div>
-            <p className="text-mainColor2 font-semibold text-lg">{name}</p>
-          </div>
-
-          <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-            <div className="flex items-center gap-2 mb-1">
-              <div className=" p-1 flex items-center justify-center rounded-md text-white bg-mainColor">
-                <IoCallSharp size={25} />
-              </div>
-              <span className="font-semibold text-mainColor2">Number</span>
-            </div>
-
-            <div className="flex items-center justify-between mt-1">
-              <p className="text-mainColor2 font-semibold text-lg">{mobile}</p>
-
-              <button className="px-3 py-1.5 rounded-md bg-mainColor text-white text-sm font-semibold hover:bg-green-700 active:scale-95 transition flex items-center gap-1">
-                Call <IoCallSharp size={18} />
-              </button>
-            </div>
-          </div>
+            );
+          })}
         </div>
       </div>
 

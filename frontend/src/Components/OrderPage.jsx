@@ -82,7 +82,7 @@ const OrderPage = () => {
     // }
 
     try {
-      const res = await fetch(`${API}/order/delivery`, {
+      const res = await fetch(`${API}/delivery/delivery`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

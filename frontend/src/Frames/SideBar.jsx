@@ -1,4 +1,3 @@
-import React from "react";
 import { useAuth } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
 import { BiLogOutCircle } from "react-icons/bi";
@@ -12,27 +11,32 @@ const SideBar = ({ roleOptions }) => {
 
   return (
     <div className="w-[15%] p-2 border-r bg-transparent border-white flex flex-col items-start gap-1">
-      <div className="w-full h-[5%]flex items-center justify-between">
-        <div className="flex flex-col w-full justify-between text-slate-300">
-          <div className="flex w-full justify-between">
-            <div className="flex w-full items-center gap-1 text-lg">
-              <FaCircleUser /> {username}
+      <div className="w-full pb-1 h-[5%] border-b flex items-center justify-between">
+        <div className="flex flex-col w-full justify-between text-white">
+          <div className="flex w-full font-semibold gap-5 justify-between">
+            <div className="w-[50%] flex items-center gap-1">
+              <div className="flex w-[50%] pl-3 items-center gap-1 text-lg">
+                <FaCircleUser size={25} />
+              </div>
+              <div className="w-[50%]">{username}</div>
             </div>
-            <button
-              onClick={logout}
-              className="w-[15%] flex items-center gap-3 h-[4%] justify-center rounded-lg bg-Red text-white transition shadow-md"
-            >
-              <BiLogOutCircle size={20} />
-            </button>
+            <div className="w-[50%] flex items-center justify-between gap-4">
+              <div className="w-[50%] text-mainColor first-letter:uppercase ">
+                {User_role}
+              </div>
+              <button
+                onClick={logout}
+                className="w-full flex items-center justify-center 
+              rounded-lg hover:bg-Red text-white transition shadow-md"
+              >
+                <BiLogOutCircle size={25} />
+              </button>
+            </div>
           </div>
-          <div className="w-full text-mainColor ">{User_role}</div>
         </div>
       </div>
 
       <div className="w-full h-[95%]">
-        <div className="uppercase text-slate-400 tracking-wider">
-          Quick access
-        </div>
         <div
           className="scroll-left  flex flex-col gap-2 overflow-y-auto h-full scrollbar-thin
        scrollbar-thumb-mainColor scrollbar-track-transparent "
@@ -44,7 +48,9 @@ const SideBar = ({ roleOptions }) => {
               onClick={() => navigate(q.nav)}
               className="w-full text-left px-3 py-2 rounded-lg bg-white/6 hover:bg-white/10 transition flex items-center gap-3"
             >
-              <div className="p-2 bg-white/8 rounded-md">{q.icon}</div>
+              <div className="bg-gradient-to-tr from-mainColor to-Indigo p-2 rounded-lg ">
+                {q.icon}
+              </div>
               <div>
                 <div className="text-sm font-medium">{q.text1}</div>
                 <div className="text-xs text-slate-400">{q.text2}</div>

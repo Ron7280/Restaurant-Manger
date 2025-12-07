@@ -72,13 +72,13 @@ const MyOrders = () => {
   if (error) return <div className="text-red-600 p-4">{error}</div>;
 
   return (
-    <div className="p-4 flex w-full h-full flex-col gap-3">
+    <div className="p-3 flex w-full h-full flex-col gap-3">
       <Header
         icon={FaClipboardList}
         title="My Orders"
         searchQuery={search}
         handleSearchChange={handleSearchChange}
-        setModalOpen={() => navigate("/menu/viewMenu")}
+        btnFunction={() => navigate("/menu/viewMenu")}
         button={true}
         searchBTN={true}
       />
