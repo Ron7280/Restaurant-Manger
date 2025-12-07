@@ -5,10 +5,10 @@ import { API } from "../../API_URL";
 import DeliveryCard from "../../Components/DeliveryCard ";
 const AssignedDeliveries = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const [deliveries, setDeliveries] = useState([]);
   const token = localStorage.getItem("token");
 
+  const [searchQuery, setSearchQuery] = useState("");
   const handleSearchChange = (e) => setSearchQuery(e.target.value);
 
   const fetchDeliveries = async () => {
@@ -38,8 +38,9 @@ const AssignedDeliveries = () => {
         title="Assigned Deliveries"
         searchQuery={searchQuery}
         handleSearchChange={handleSearchChange}
-        setModalOpen={setModalOpen}
+        btnFunction={() => setModalOpen(true)}
         button={false}
+        searchBTN={true}
       />
 
       {deliveries.length === 0 ? (

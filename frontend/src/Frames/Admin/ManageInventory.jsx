@@ -122,7 +122,7 @@ const ManageInventory = () => {
         title="Manage Inventory"
         searchQuery={searchQuery}
         handleSearchChange={handleSearchChange}
-        setModalOpen={setModalOpen}
+        btnFunction={() => setModalOpen(true)}
         button={true}
       />
 

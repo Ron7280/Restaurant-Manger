@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa";
 import { HiBuildingStorefront } from "react-icons/hi2";
 import { Outlet } from "react-router-dom";
+import { BsFillBoxSeamFill } from "react-icons/bs";
 import SideBar from "./SideBar";
 
 const Menu = ({ roleProp }) => {
@@ -103,6 +104,12 @@ const Menu = ({ roleProp }) => {
           nav: "/menu/trackMap",
           icon: <FaMapMarkedAlt size={30} />,
         },
+        {
+          text1: "Delivery History",
+          text2: "Completed deliveries",
+          nav: "/menu/history",
+          icon: <BsFillBoxSeamFill size={30} />,
+        },
       ],
     };
     return options[role] || [];
@@ -111,7 +118,9 @@ const Menu = ({ roleProp }) => {
   return (
     <div className="h-screen w-full flex bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-700 text-slate-100">
       <SideBar roleOptions={roleOptions} />
-      <Outlet context={{ role, roleOptions }} />
+      <div className="w-[85%]">
+        <Outlet context={{ role, roleOptions }} />
+      </div>
     </div>
   );
 };

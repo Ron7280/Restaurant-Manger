@@ -22,6 +22,7 @@ import TrackMap from "./Frames/Delivery/TrackMap";
 import AssignedDeliveries from "./Frames/Delivery/AssignedDeliveries";
 import SignUp from "./Frames/SignUp";
 import Background from "./Frames/Background";
+import History from "./Frames/Delivery/History";
 
 function App() {
   const [changeTheme, setChangeTheme] = useState(false);
@@ -61,6 +62,7 @@ function App() {
 
                   <Route path="assigned" element={<AssignedDeliveries />} />
                   <Route path="trackMap" element={<TrackMap />} />
+                  <Route path="history" element={<History />} />
                 </Route>
               </Route>
             </Routes>

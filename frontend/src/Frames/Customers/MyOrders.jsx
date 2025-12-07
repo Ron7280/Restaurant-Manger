@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { API } from "../../API_URL";
 import MyOrderCompo from "../../Components/MyOrderCompo";
-import { FaSearch } from "react-icons/fa";
+import { FaClipboardList, FaSearch } from "react-icons/fa";
+import Header from "../../Components/Header";
+import { useNavigate } from "react-router-dom";
 
 const MyOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -9,6 +11,10 @@ const MyOrders = () => {
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
   const token = localStorage.getItem("token");
+  const [modalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSearchChange = (e) => setSearch(e.target.value);
 
   const fetchOrders = async () => {
     try {
@@ -35,20 +41,26 @@ const MyOrders = () => {
   }, []);
 
   const filteredOrders = useMemo(() => {
-    if (!search) return orders;
+    if (!search.trim()) return orders;
+
+    const searchLower = search.toLowerCase();
+
     return orders.filter((order) => {
       const created = new Date(order.createdAt);
-      const date = created.toLocaleDateString();
-      const time = created.toLocaleTimeString();
-      const total = order.totalPrice.toFixed(2);
+
+      const date = created.toLocaleDateString().toLowerCase();
+      const time = created.toLocaleTimeString().toLowerCase();
+
+      const total = order.totalPrice.toString().toLowerCase();
       const status = order.status.toLowerCase();
-      const searchLower = search.toLowerCase();
+      const id = order.id?.toString().toLowerCase();
 
       return (
         date.includes(searchLower) ||
         time.includes(searchLower) ||
         total.includes(searchLower) ||
-        status.includes(searchLower)
+        status.includes(searchLower) ||
+        id.includes(searchLower)
       );
     });
   }, [search, orders]);
@@ -60,32 +72,24 @@ const MyOrders = () => {
   if (error) return <div className="text-red-600 p-4">{error}</div>;
 
   return (
-    <div className="p-4 flex w-full h-full flex-col gap-4">
-      <div className="flex justify-between items-center">
-        <div className="flex w-[30%] items-center gap-2 font-bold text-center">
-          <div className="w-[25%] flex text-2xl  justify-start">My Orders</div>
-          <div className="bg-mainColor rounded-lg p-1 shadow-black shadow-md text-center min-w-[20%] max-w-[30%]">
-            {filteredOrders.length}
-          </div>
-        </div>
-
-        <div className="flex justify-between w-[30%] rounded-lg bg-white items-center pl-2 pr-2 shadow-md shadow-black">
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search order . . ."
-            className="w-full bg-transparent outline-none text-black font-semibold p-2"
-          />
-          <FaSearch className="text-emerald-400" />
-        </div>
-      </div>
+    <div className="p-4 flex w-full h-full flex-col gap-3">
+      <Header
+        icon={FaClipboardList}
+        title="My Orders"
+        searchQuery={search}
+        handleSearchChange={handleSearchChange}
+        setModalOpen={() => navigate("/menu/viewMenu")}
+        button={true}
+        searchBTN={true}
+      />
 
       {filteredOrders.length === 0 && (
-        <div className="text-gray-500 text-center mt-4">No orders found.</div>
+        <div className="text-gray-500 text-center h-[95%] flex flex-col justify-center items-center">
+          No orders found.
+        </div>
       )}
 
-      <div className="grid grid-rows-3 grid-cols-3 gap-3 pr-1 overflow-y-auto h-full scrollbar-thin scrollbar-thumb-mainColor scrollbar-track-transparent">
+      <div className="grid grid-rows-3 grid-cols-3 gap-3 pr-1 overflow-y-auto h-[95%] scrollbar-thin scrollbar-thumb-mainColor scrollbar-track-transparent">
         {filteredOrders.map((order) => (
           <MyOrderCompo
             key={order.id}

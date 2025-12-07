@@ -90,7 +90,7 @@ const ViewOrders = () => {
         title="View Orders"
         searchQuery={searchQuery}
         handleSearchChange={handleSearchChange}
-        setModalOpen={setModalOpen}
+        btnFunction={() => setModalOpen(true)}
         button={false}
       />
       <div className="overflow-x-auto h-[95%]">

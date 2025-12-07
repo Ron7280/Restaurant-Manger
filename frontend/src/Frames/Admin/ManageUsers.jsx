@@ -130,8 +130,8 @@ const ManageUsers = () => {
         title="Manage Users"
         searchQuery={searchQuery}
         handleSearchChange={handleSearchChange}
-        setModalOpen={setModalOpen}
-        button={true}
+        btnFunction={() => setModalOpen(true)}
+        button={false}
       />
 
       <div className="overflow-x-auto h-[95%]">

@@ -125,7 +125,7 @@ const DeliveryCard = ({ delivery }) => {
                 {item.name}
               </div>
 
-              <div className="flex text-gray-700 justify-center w-[30%]">
+              <div className="flex text-gray-700 justify-center font-semibold w-[30%]">
                 x {item.quantity}
               </div>
               <div className="font-semibold w-[30%] flex justify-end text-gray-900">

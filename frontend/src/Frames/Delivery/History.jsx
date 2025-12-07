@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Header from "../../Components/Header";
-import { HiBuildingStorefront } from "react-icons/hi2";
+import { BsFillBoxSeamFill } from "react-icons/bs";
 
-const BuySupplies = () => {
+const History = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -10,15 +10,16 @@ const BuySupplies = () => {
   return (
     <div className="p-3 h-full w-full flex flex-col gap-3">
       <Header
-        icon={HiBuildingStorefront}
-        title="Buy Supplies"
+        icon={BsFillBoxSeamFill}
+        title="Delivery History"
         searchQuery={searchQuery}
         handleSearchChange={handleSearchChange}
         btnFunction={() => setModalOpen(true)}
-        button={true}
+        button={false}
+        searchBTN={true}
       />
     </div>
   );
 };
 
-export default BuySupplies;
+export default History;

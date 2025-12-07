@@ -40,8 +40,17 @@ const MyOrderCompo = ({ order, fetchOrders }) => {
       <div className="flex justify-between items-center">
         <div className="text-gray-700 w-full gap-1 flex flex-col font-semibold">
           <div className="flex justify-between w-full items-center">
-            <div className="flex items-center gap-1">
-              <FaReceipt size={20} /> Order Num : {order.serialNum}
+            <div className="flex flex-col gap-2 text-black">
+              <div className="flex items-center gap-2 font-bold">
+                <div
+                  className="flex gap-1 items-center w-full pr-2 pl-2 justify-center
+            text-white bg-gradient-to-tr from-mainColor to-Indigo p-1 rounded-lg "
+                >
+                  <FaReceipt size={25} className=" text-white" />
+                  Order
+                </div>
+                {order.serialNum}
+              </div>
             </div>
 
             <AnimatedButton
@@ -55,18 +64,27 @@ const MyOrderCompo = ({ order, fetchOrders }) => {
               pad=""
             />
           </div>
-          <div className="flex items-center gap-1">
-            <FaDollarSign size={20} /> Total : ${order.totalPrice.toFixed(2)}
+
+          <div className="flex items-center gap-2 font-bold">
+            <div className="bg-gradient-to-tr from-mainColor to-Indigo p-1 rounded-lg ">
+              <FaDollarSign size={20} className=" text-white" />
+            </div>
+            Total : ${order.totalPrice.toFixed(2)}
           </div>
-          <div className="flex items-center gap-1">
-            <GrStatusInfo size={20} />
+
+          <div className="flex items-center gap-2 font-bold">
+            <div className="bg-gradient-to-tr from-mainColor to-Indigo p-1 rounded-lg ">
+              <GrStatusInfo size={20} className=" text-white" />
+            </div>
             Status : {order.status}
           </div>
 
           <div className="flex  justify-between  text-gray-500">
-            <div className="flex gap-1 items-center">
-              <MdOutlineAccessTimeFilled size={20} /> Created :
-              {new Date(order.createdAt).toLocaleString()}
+            <div className="flex items-center gap-2 font-bold">
+              <div className="bg-gradient-to-tr from-mainColor to-Indigo p-1 rounded-lg ">
+                <MdOutlineAccessTimeFilled size={20} className=" text-white" />
+              </div>
+              Created :{new Date(order.createdAt).toLocaleString()}
             </div>
             <AnimatedButton
               func={() => setDetails(!details)}
@@ -84,17 +102,21 @@ const MyOrderCompo = ({ order, fetchOrders }) => {
       {details && (
         <div className="font-semibold">
           <div className="text-gray-600 flex  justify-between">
-            <div className="flex items-center w-[60%] gap-1 font-semibold ">
-              <GiMeal size={20} /> Items :
+            <div className="flex items-center gap-2 font-bold w-[60%]">
+              <div className="bg-gradient-to-tr from-mainColor to-Indigo p-1 rounded-lg ">
+                <GiMeal size={20} className=" text-white" />
+              </div>
+              Items :
             </div>
+
             <div className="w-[20%]">Price</div>
             <div className="w-[20%]">Quantity</div>
           </div>
           <div className="pl-10 text-gray-700">
-            {order.orderItems.map((item) => (
+            {order.orderItems.map((item, index) => (
               <div className=" flex justify-between" key={item.id}>
                 <div className="w-[60%]">
-                  {item.menuItem?.name || "Unknown Item"}
+                  {index + 1} - {item.menuItem?.name || "Unknown Item"}
                 </div>
                 <div className="w-[20%]">${item.menuItem?.price}</div>
                 <div className="w-[20%]">{item.quantity}</div>

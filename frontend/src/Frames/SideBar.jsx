@@ -11,7 +11,7 @@ const SideBar = ({ roleOptions }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="w-64 p-2 border-r bg-transparent border-white flex flex-col items-start gap-1">
+    <div className="w-[15%] p-2 border-r bg-transparent border-white flex flex-col items-start gap-1">
       <div className="w-full h-[5%]flex items-center justify-between">
         <div className="flex flex-col w-full justify-between text-slate-300">
           <div className="flex w-full justify-between">

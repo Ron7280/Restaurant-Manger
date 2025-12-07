@@ -134,7 +134,7 @@ const AssignDeliveries = () => {
         title="Assign Deliveries"
         searchQuery={searchQuery}
         handleSearchChange={handleSearchChange}
-        setModalOpen={setModalOpen}
+        btnFunction={() => setModalOpen(true)}
         button={false}
       />
 
