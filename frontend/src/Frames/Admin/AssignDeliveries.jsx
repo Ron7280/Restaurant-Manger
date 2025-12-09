@@ -14,7 +14,6 @@ const AssignDeliveries = () => {
   const [deliveries, setDeliveries] = useState([]);
   const token = localStorage.getItem("token");
 
-  // Fetch orders from API
   const fetchOrders = async () => {
     try {
       setLoading(true);
@@ -35,7 +34,6 @@ const AssignDeliveries = () => {
     }
   };
 
-  // Fetch delivery users
   const fetchUsers = async () => {
     try {
       setLoading(true);
@@ -56,7 +54,6 @@ const AssignDeliveries = () => {
     }
   };
 
-  // Assign a delivery guy to an order
   const handleAssign = async (orderId, userId) => {
     try {
       const res = await fetch(`${API}/delivery/assign_delivery`, {
@@ -71,7 +68,6 @@ const AssignDeliveries = () => {
       if (!res.ok) throw new Error("Failed to assign delivery");
       const data = await res.json();
 
-      // Update deliveries state
       setDeliveries((prev) =>
         prev.map((order) =>
           order.id === orderId
@@ -84,7 +80,6 @@ const AssignDeliveries = () => {
     }
   };
 
-  // Export filtered orders to Excel
   const exportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(filteredOrders);
     const workbook = XLSX.utils.book_new();
@@ -97,7 +92,6 @@ const AssignDeliveries = () => {
     fetchOrders();
   }, []);
 
-  // Filter orders based on search query
   const filteredOrders = useMemo(() => {
     if (!searchQuery) return deliveries;
     const searchLower = searchQuery.toLowerCase();
@@ -165,7 +159,7 @@ const AssignDeliveries = () => {
             </thead>
             <tbody>
               {filteredOrders
-                .filter((order) => order.type === "delivery")
+                .filter((order) => order.type === "pending")
                 .filter((order) => order.status !== "assigned")
                 .map((order, index) => {
                   const createdAt = order.createdAt.split("T")[0];

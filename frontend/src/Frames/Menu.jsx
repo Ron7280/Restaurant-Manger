@@ -9,9 +9,11 @@ import {
   FaMapMarkedAlt,
 } from "react-icons/fa";
 import { HiBuildingStorefront } from "react-icons/hi2";
+import { FaTruckArrowRight } from "react-icons/fa6";
 import { Outlet } from "react-router-dom";
 import { BsFillBoxSeamFill } from "react-icons/bs";
 import SideBar from "./SideBar";
+import { BiSolidPurchaseTag } from "react-icons/bi";
 
 const Menu = ({ roleProp }) => {
   const role = roleProp || localStorage.getItem("role");
@@ -89,6 +91,20 @@ const Menu = ({ roleProp }) => {
           text2: "Completed orders",
           nav: "/orders/history",
           icon: <FaBoxOpen size={30} />,
+        },
+      ],
+      buyer: [
+        {
+          text1: "Supplies to buy",
+          text2: "pending supplies",
+          nav: "/menu/buying",
+          icon: <FaTruckArrowRight size={30} />,
+        },
+        {
+          text1: "Purchase history",
+          text2: "Completed purchases",
+          nav: "/menu/purchaseHistory",
+          icon: <BiSolidPurchaseTag size={30} />,
         },
       ],
       delivery: [

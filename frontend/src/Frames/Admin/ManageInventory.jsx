@@ -115,6 +115,28 @@ const ManageInventory = () => {
     }
   };
 
+  const matchesTableFilter = (
+    items,
+    category,
+    comparisonType,
+    quantityFilter
+  ) => {
+    return items.some((item) => {
+      const matchesCategory =
+        item.category?.toLowerCase() === category.toLowerCase();
+
+      const qty = parseFloat(item.quantity);
+      if (isNaN(qty)) return false;
+
+      if (comparisonType === ">=")
+        return matchesCategory && qty >= quantityFilter;
+      if (comparisonType === "<")
+        return matchesCategory && qty < quantityFilter;
+
+      return false;
+    });
+  };
+
   return (
     <div className="p-3 h-full w-full flex flex-col gap-3">
       <Header
@@ -122,6 +144,7 @@ const ManageInventory = () => {
         title="Manage Inventory"
         searchQuery={searchQuery}
         handleSearchChange={handleSearchChange}
+        searchBTN={true}
         btnFunction={() => setModalOpen(true)}
         button={true}
       />
@@ -130,41 +153,49 @@ const ManageInventory = () => {
         className="grid grid-cols-2 gap-3 w-full h-[95%] overflow-auto 
       scrollbar-thin scrollbar-thumb-transparent scrollbar-track-transparent"
       >
-        <ItemTable
-          title="Quantity of ingredient equal or bigger then 50"
-          filteredItems={filteredItems}
-          quantityFilter={50}
-          categoryFilter="ingredient"
-          comparisonType=">="
-          fetchInventoryItems={fetchInventoryItems}
-        />
+        {matchesTableFilter(filteredItems, "ingredient", ">=", 50) && (
+          <ItemTable
+            title="Quantity of ingredient equal or bigger then 50"
+            filteredItems={filteredItems}
+            quantityFilter={50}
+            categoryFilter="ingredient"
+            comparisonType=">="
+            fetchInventoryItems={fetchInventoryItems}
+          />
+        )}
 
-        <ItemTable
-          title="Quantity of ingredient smaller then 50"
-          filteredItems={filteredItems}
-          quantityFilter={50}
-          categoryFilter="ingredient"
-          comparisonType="<"
-          fetchInventoryItems={fetchInventoryItems}
-        />
+        {matchesTableFilter(filteredItems, "ingredient", "<", 50) && (
+          <ItemTable
+            title="Quantity of ingredient smaller then 50"
+            filteredItems={filteredItems}
+            quantityFilter={50}
+            categoryFilter="ingredient"
+            comparisonType="<"
+            fetchInventoryItems={fetchInventoryItems}
+          />
+        )}
 
-        <ItemTable
-          title="Quantity of tools equal or bigger then 15"
-          filteredItems={filteredItems}
-          quantityFilter={15}
-          categoryFilter="tools"
-          comparisonType=">="
-          fetchInventoryItems={fetchInventoryItems}
-        />
+        {matchesTableFilter(filteredItems, "tools", ">=", 15) && (
+          <ItemTable
+            title="Quantity of tools equal or bigger then 15"
+            filteredItems={filteredItems}
+            quantityFilter={15}
+            categoryFilter="tools"
+            comparisonType=">="
+            fetchInventoryItems={fetchInventoryItems}
+          />
+        )}
 
-        <ItemTable
-          title="Quantity of tools smaller then 15"
-          filteredItems={filteredItems}
-          quantityFilter={15}
-          categoryFilter="tools"
-          comparisonType="<"
-          fetchInventoryItems={fetchInventoryItems}
-        />
+        {matchesTableFilter(filteredItems, "tools", "<", 15) && (
+          <ItemTable
+            title="Quantity of tools smaller then 15"
+            filteredItems={filteredItems}
+            quantityFilter={15}
+            categoryFilter="tools"
+            comparisonType="<"
+            fetchInventoryItems={fetchInventoryItems}
+          />
+        )}
       </div>
 
       {modalOpen && (
