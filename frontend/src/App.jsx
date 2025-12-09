@@ -27,6 +27,8 @@ import {
   delivery_orders_context,
   delivery_history_context,
 } from "./Contexts";
+import SuppliesToBuy from "./Frames/Buyer/SuppliesToBuy";
+import PurchaseHistory from "./Frames/Buyer/PurchaseHistory";
 
 function App() {
   const [changeTheme, setChangeTheme] = useState(false);
@@ -71,6 +73,12 @@ function App() {
                     <Route path="assigned" element={<AssignedDeliveries />} />
                     <Route path="trackMap" element={<TrackMap />} />
                     <Route path="history" element={<History />} />
+
+                    <Route path="suppliesToBuy" element={<SuppliesToBuy />} />
+                    <Route
+                      path="purchaseHistory"
+                      element={<PurchaseHistory />}
+                    />
                   </Route>
                 </Route>
               </Routes>

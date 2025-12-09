@@ -20,6 +20,9 @@ model User {
   createdAt    DateTime    @default(now())
   orders       Order[]
   deliveries   Delivery[]
+  boughtSupplies  SupplyPurchase[]   @relation("BuyerRelation")
+  orderedSupplies SupplyPurchase[] @relation("OrderByRelation") 
+
 }
 
 model MenuItem {
@@ -88,6 +91,20 @@ model Delivery {
   mobile    String
   delivered Boolean  @default(false)
   delivered_at  DateTime?
+}
+
+model SupplyPurchase {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  orderedBy   User     @relation("OrderByRelation", fields: [ordered_by], references: [id])
+  ordered_by  String  
+  buyer       User?    @relation("BuyerRelation", fields: [buyer_id], references: [id])
+  buyer_id    String?
+  item_name   String
+  quantity    Float
+  unit        String?
+  status      String   @default("pending")
+  created_at  DateTime @default(now())
+  updated_at  DateTime?
 }
 
 

@@ -121,7 +121,7 @@ const ManageUsers = () => {
       <div className="p-4 text-center text-gray-600">Loading users...</div>
     );
 
-  if (error) return <div className="text-red-600 p-4">{error}</div>;
+  if (error) return <div className="text-Red p-4">{error}</div>;
 
   return (
     <div className="p-3 h-full w-full flex flex-col gap-3">
@@ -132,6 +132,7 @@ const ManageUsers = () => {
         handleSearchChange={handleSearchChange}
         btnFunction={() => setModalOpen(true)}
         button={false}
+        searchBTN={true}
       />
 
       <div className="overflow-x-auto h-[95%]">
@@ -142,12 +143,13 @@ const ManageUsers = () => {
             <thead className="bg-mainColor text-white">
               <tr>
                 <th className="p-2 w-[10%] text-left">Image</th>
+                <th className="p-2 w-[15%] text-left">Name</th>
                 <th className="p-2 w-[15%] text-left">Username</th>
-                <th className="p-2 w-[20%] text-left">Name</th>
                 <th className="p-2 w-[15%] text-left">Role</th>
-                <th className="p-2 w-[15%] text-left">Status</th>
+                <th className="p-2 w-[15%] text-left">Mobile</th>
+                <th className="p-2 w-[10%] text-left">Status</th>
                 <th className="p-2 w-[15%] text-left">Created At</th>
-                <th className="p-2 w-[10%]">
+                <th className="p-2 w-[5%]">
                   <div className="flex items-center justify-center gap-5 w-full">
                     Actions
                     <PiMicrosoftExcelLogoFill
@@ -179,9 +181,10 @@ const ManageUsers = () => {
                         <FaCircleUser className="w-10 h-10 text-gray-300" />
                       )}
                     </td>
-                    <td className="p-2 capitalize">{user.username}</td>
                     <td className="p-2 capitalize">{user.name}</td>
+                    <td className="p-2 capitalize">{user.username}</td>
                     <td className="p-2 capitalize">{user.role}</td>
+                    <td className="p-2 capitalize">{user.mobile}</td>
                     <td className="p-2 capitalize">
                       {user.banned ? "Banned" : "Active"}
                     </td>
@@ -199,7 +202,7 @@ const ManageUsers = () => {
                             setDeletingItem(user);
                             setConfirmOpen(true);
                           }}
-                          className="text-red-600"
+                          className="text-Red"
                         >
                           <MdDelete size={20} />
                         </button>

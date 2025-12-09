@@ -39,5 +39,6 @@ app.use("/order", require("./Routes/Orders.js"));
 app.use("/inventory", require("./Routes/manageInventory.js"));
 app.use("/users", require("./Routes/manageUsers.js"));
 app.use("/delivery", require("./Routes/deliveries.js"));
+app.use("/supplies", require("./Routes/supplies.js"));
 
 module.exports = app;

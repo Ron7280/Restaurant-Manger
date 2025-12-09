@@ -7,7 +7,8 @@ const MainDashboard = () => {
   const navigate = useNavigate();
   return (
     <div className="flex flex-col gap-5 p-10">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center gap-1">
+        <img src="src/assets/restaurant.png" className="w-16 h-16" />
         <div>
           <div
             className="text-3xl font-extrabold

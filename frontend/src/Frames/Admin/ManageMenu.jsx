@@ -194,7 +194,7 @@ const ManageMenu = () => {
       )}
 
       <div
-        className="grid grid-cols-3 gap-3 h-fit
+        className="grid grid-cols-3 gap-3 h-[95%]
        overflow-y-auto scrollbar-thin scrollbar-thumb-mainColor scrollbar-track-transparent"
       >
         {filtered.map((it, index) => (

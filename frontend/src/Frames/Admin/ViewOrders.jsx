@@ -92,6 +92,7 @@ const ViewOrders = () => {
         handleSearchChange={handleSearchChange}
         btnFunction={() => setModalOpen(true)}
         button={false}
+        searchBTN={true}
       />
       <div className="overflow-x-auto h-[95%]">
         {filteredOrders.length === 0 ? (

@@ -97,7 +97,7 @@ const Menu = ({ roleProp }) => {
         {
           text1: "Supplies to buy",
           text2: "pending supplies",
-          nav: "/menu/buying",
+          nav: "/menu/suppliesToBuy",
           icon: <FaTruckArrowRight size={30} />,
         },
         {

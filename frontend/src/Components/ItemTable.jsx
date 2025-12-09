@@ -8,6 +8,7 @@ import { FaTruck } from "react-icons/fa6";
 import { API } from "../API_URL";
 import DeleteModal from "../Modals/DeleteModal";
 import { useNavigate } from "react-router-dom";
+import BuySuppliesModal from "../Modals/BuySuppliesModal";
 
 const ItemTable = ({
   title,
@@ -20,10 +21,17 @@ const ItemTable = ({
   const [isTableVisible, setIsTableVisible] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [buyOpen, setBuyOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [deletingItem, setDeletingItem] = useState(null);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const [buyingItem, setBuyingItem] = useState(null);
+  const [buying, setBuying] = useState(false);
+  const [buyForm, setBuyForm] = useState({
+    buyQuantity: "",
+  });
+
   const [form, setForm] = useState({
     id: "",
     name: "",
@@ -134,6 +142,44 @@ const ItemTable = ({
     }
   };
 
+  const handleBuy = async () => {
+    if (!buyForm.buyQuantity || parseFloat(buyForm.buyQuantity) <= 0) {
+      alert("Please enter a valid quantity to buy");
+      return;
+    }
+
+    setBuying(true);
+
+    try {
+      const response = await fetch(`${API}/supplies/supply_purchase`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          item_name: buyingItem.name,
+          quantity: parseFloat(buyForm.buyQuantity),
+          unit: buyingItem.unit,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setBuyOpen(false);
+        setBuyForm({ buyQuantity: "" });
+      } else {
+        alert(data.error || "Failed to submit purchase request.");
+      }
+    } catch (error) {
+      console.error("Error submitting purchase:", error);
+      alert("Error submitting purchase request.");
+    }
+
+    setBuying(false);
+  };
+
   return (
     <div
       title={title}
@@ -208,7 +254,10 @@ const ItemTable = ({
                   <td className="p-2">
                     <div className="flex items-center justify-center gap-5">
                       <button
-                        onClick={() => navigate("/menu/buySupplies")}
+                        onClick={() => {
+                          setBuyingItem(item);
+                          setBuyOpen(true);
+                        }}
                         className="text-blue-700"
                       >
                         <FaTruck />
@@ -252,6 +301,17 @@ const ItemTable = ({
           setConfirmOpen={setConfirmOpen}
           handleDelete={() => handleDeleteItem(deletingItem.id)}
           deleting={deleting}
+        />
+      )}
+
+      {buyOpen && (
+        <BuySuppliesModal
+          buyingItem={buyingItem}
+          setConfirmOpen={setBuyOpen}
+          handleBuy={handleBuy}
+          buying={buying}
+          form={buyForm}
+          setForm={setBuyForm}
         />
       )}
     </div>
