@@ -7,8 +7,8 @@ import { FaEdit } from "react-icons/fa";
 import { FaTruck } from "react-icons/fa6";
 import { API } from "../API_URL";
 import DeleteModal from "../Modals/DeleteModal";
-import { useNavigate } from "react-router-dom";
 import BuySuppliesModal from "../Modals/BuySuppliesModal";
+import ExportToExcel from "./ExportToExcel";
 
 const ItemTable = ({
   title,
@@ -24,7 +24,6 @@ const ItemTable = ({
   const [buyOpen, setBuyOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [deletingItem, setDeletingItem] = useState(null);
-  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [buyingItem, setBuyingItem] = useState(null);
   const [buying, setBuying] = useState(false);
@@ -200,6 +199,13 @@ const ItemTable = ({
             <th className="p-2 w-[10%]">
               <div className="flex justify-center gap-5">
                 <div>Actions</div>
+                <ExportToExcel
+                  data={filteredItems
+                    .filter((item) => applyFilter(item.quantity))
+                    .filter((item) => item.category === categoryFilter)}
+                  fileName={`${categoryFilter} Items`}
+                  sheetName={`${categoryFilter} Items`}
+                />
                 <button onClick={() => setIsTableVisible((prev) => !prev)}>
                   {isTableVisible ? <BiSolidHide /> : <FaTableList />}
                 </button>

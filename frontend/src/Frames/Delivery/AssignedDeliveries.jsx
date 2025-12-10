@@ -49,7 +49,7 @@ const AssignedDeliveries = () => {
   });
 
   return (
-    <div className="p-3 h-full w-full flex flex-col gap-3">
+    <div className="p-3 pb-0 h-full w-full flex flex-col gap-3">
       <Header
         icon={FaTruck}
         title="Assigned Deliveries"

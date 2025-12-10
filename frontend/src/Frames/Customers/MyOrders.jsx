@@ -72,7 +72,7 @@ const MyOrders = () => {
   if (error) return <div className="text-red-600 p-4">{error}</div>;
 
   return (
-    <div className="p-3 flex w-full h-full flex-col gap-3">
+    <div className="p-3 pb-0 flex w-full h-full flex-col gap-3">
       <Header
         icon={FaClipboardList}
         title="My Orders"
@@ -89,7 +89,7 @@ const MyOrders = () => {
         </div>
       )}
 
-      <div className="grid grid-rows-3 grid-cols-3 gap-3 pr-1 overflow-y-auto h-[95%] scrollbar-thin scrollbar-thumb-mainColor scrollbar-track-transparent">
+      <div className="grid grid-rows-3 grid-cols-3 gap-3 scrollbar-none overflow-y-auto pr-1 h-[95%]">
         {filteredOrders.map((order) => (
           <MyOrderCompo
             key={order.id}

@@ -1,9 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Header from "../../Components/Header";
 import { FaTruck } from "react-icons/fa";
-import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 import { API } from "../../API_URL";
-import * as XLSX from "xlsx";
+import ExportToExcel from "../../Components/ExportToExcel";
 
 const AssignDeliveries = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -14,7 +13,7 @@ const AssignDeliveries = () => {
   const [deliveries, setDeliveries] = useState([]);
   const token = localStorage.getItem("token");
 
-  const fetchOrders = async () => {
+  const fetchDeliveries = async () => {
     try {
       setLoading(true);
       setError(null);
@@ -80,19 +79,12 @@ const AssignDeliveries = () => {
     }
   };
 
-  const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(filteredOrders);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Orders");
-    XLSX.writeFile(workbook, "orders.xlsx");
-  };
-
   useEffect(() => {
     fetchUsers();
-    fetchOrders();
+    fetchDeliveries();
   }, []);
 
-  const filteredOrders = useMemo(() => {
+  const filteredDeliveries = useMemo(() => {
     if (!searchQuery) return deliveries;
     const searchLower = searchQuery.toLowerCase();
     return deliveries.filter((order) => {
@@ -113,6 +105,14 @@ const AssignDeliveries = () => {
     });
   }, [searchQuery, deliveries]);
 
+  const pendingDeliveries = useMemo(
+    () =>
+      filteredDeliveries.filter(
+        (order) => order.type === "delivery" && order.status === "pending"
+      ),
+    [filteredDeliveries]
+  );
+
   if (loading)
     return (
       <div className="p-4 text-center text-gray-600">Loading orders...</div>
@@ -122,7 +122,7 @@ const AssignDeliveries = () => {
   const handleSearchChange = (e) => setSearchQuery(e.target.value);
 
   return (
-    <div className="p-3 h-full w-full flex flex-col gap-3">
+    <div className="p-3 pb-0 h-full w-full flex flex-col gap-3">
       <Header
         icon={FaTruck}
         title="Assign Deliveries"
@@ -133,7 +133,7 @@ const AssignDeliveries = () => {
       />
 
       <div className="overflow-x-auto h-[95%]">
-        {filteredOrders.length === 0 ? (
+        {pendingDeliveries.length === 0 ? (
           <div className="text-center text-gray-500">No orders found.</div>
         ) : (
           <table className="min-w-full font-semibold text-black bg-white rounded-lg table-auto">
@@ -147,54 +147,49 @@ const AssignDeliveries = () => {
                 <th className="p-2 w-[15%] text-left">Created at</th>
                 <th className="p-2 w-[10%]">
                   <div className="flex items-center justify-center gap-5 w-full">
-                    Actions
-                    <PiMicrosoftExcelLogoFill
-                      onClick={exportToExcel}
-                      className="cursor-pointer"
-                      size={25}
+                    Actions{" "}
+                    <ExportToExcel
+                      data={pendingDeliveries}
+                      fileName="Deliveries"
+                      sheetName="Deliveries"
                     />
                   </div>
                 </th>
               </tr>
             </thead>
             <tbody>
-              {filteredOrders
-                .filter((order) => order.type === "pending")
-                .filter((order) => order.status !== "assigned")
-                .map((order, index) => {
-                  const createdAt = order.createdAt.split("T")[0];
-                  return (
-                    <tr
-                      key={order.id}
-                      className={`${index % 2 === 0 ? "bg-green-100" : ""}`}
-                    >
-                      <td className="p-2">{order.serialNum}</td>
-                      <td className="p-2 capitalize">{order.type}</td>
-                      <td className="p-2">${order.totalPrice}</td>
-                      <td className="p-2 capitalize">{order.status}</td>
-                      <td className="p-2">
-                        <select
-                          className="bg-transparent w-[75%] outline-none"
-                          value={order.driverId || ""}
-                          onChange={(e) =>
-                            handleAssign(order.id, e.target.value)
-                          }
-                        >
-                          <option value="">Select</option>
-                          {users
-                            .filter((guy) => guy.role === "delivery")
-                            .map((guy) => (
-                              <option key={guy.id} value={guy.id}>
-                                {guy.name}
-                              </option>
-                            ))}
-                        </select>
-                      </td>
-                      <td className="p-2">{createdAt}</td>
-                      <td className="p-2">button button</td>
-                    </tr>
-                  );
-                })}
+              {pendingDeliveries.map((order, index) => {
+                const createdAt = order.createdAt.split("T")[0];
+                return (
+                  <tr
+                    key={order.id}
+                    className={`${index % 2 === 0 ? "bg-green-100" : ""}`}
+                  >
+                    <td className="p-2">{order.serialNum}</td>
+                    <td className="p-2 capitalize">{order.type}</td>
+                    <td className="p-2">${order.totalPrice}</td>
+                    <td className="p-2 capitalize">{order.status}</td>
+                    <td className="p-2">
+                      <select
+                        className="bg-transparent w-[75%] outline-none"
+                        value={order.driverId || ""}
+                        onChange={(e) => handleAssign(order.id, e.target.value)}
+                      >
+                        <option value="">Select</option>
+                        {users
+                          .filter((guy) => guy.role === "delivery")
+                          .map((guy) => (
+                            <option key={guy.id} value={guy.id}>
+                              {guy.name}
+                            </option>
+                          ))}
+                      </select>
+                    </td>
+                    <td className="p-2">{createdAt}</td>
+                    <td className="p-2">button button</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         )}

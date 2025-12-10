@@ -2,12 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 import Header from "../../Components/Header";
 import { FaEdit, FaUsers } from "react-icons/fa";
 import { API } from "../../API_URL";
-import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 import { MdDelete } from "react-icons/md";
 import DeleteModal from "../../Modals/DeleteModal";
 import EditUserModal from "../../Modals/EditUserModal";
 import { FaCircleUser } from "react-icons/fa6";
 import { TbHandStop } from "react-icons/tb";
+import ExportToExcel from "../../Components/ExportToExcel";
 
 const ManageUsers = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -20,13 +20,6 @@ const ManageUsers = () => {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [saving, setSaving] = useState(false);
   const token = localStorage.getItem("token");
-
-  const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(filteredUsers);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Users");
-    XLSX.writeFile(workbook, "users.xlsx");
-  };
 
   const fetchUsers = async () => {
     try {
@@ -124,7 +117,7 @@ const ManageUsers = () => {
   if (error) return <div className="text-Red p-4">{error}</div>;
 
   return (
-    <div className="p-3 h-full w-full flex flex-col gap-3">
+    <div className="p-3 pb-0 h-full w-full flex flex-col gap-3">
       <Header
         icon={FaUsers}
         title="Manage Users"
@@ -152,10 +145,10 @@ const ManageUsers = () => {
                 <th className="p-2 w-[5%]">
                   <div className="flex items-center justify-center gap-5 w-full">
                     Actions
-                    <PiMicrosoftExcelLogoFill
-                      onClick={exportToExcel}
-                      className="cursor-pointer"
-                      size={25}
+                    <ExportToExcel
+                      data={filteredUsers}
+                      fileName="Users"
+                      sheetName="Users"
                     />
                   </div>
                 </th>

@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 const MainDashboard = () => {
@@ -6,7 +5,7 @@ const MainDashboard = () => {
 
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col gap-5 p-10">
+    <div className="flex flex-col gap-5 p-10 pb-0 h-full">
       <div className="flex items-center gap-1">
         <img src="src/assets/restaurant.png" className="w-16 h-16" />
         <div>

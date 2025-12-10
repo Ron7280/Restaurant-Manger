@@ -2,9 +2,8 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import Header from "../../Components/Header";
 import { FaReceipt } from "react-icons/fa";
 import { API } from "../../API_URL";
-import * as XLSX from "xlsx";
-import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 import { delivery_orders_context } from "../../Contexts";
+import ExportToExcel from "../../Components/ExportToExcel";
 
 const ViewOrders = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -18,13 +17,6 @@ const ViewOrders = () => {
   );
 
   const token = localStorage.getItem("token");
-
-  const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(filteredOrders);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Orders");
-    XLSX.writeFile(workbook, "orders.xlsx");
-  };
 
   const fetchOrders = async () => {
     try {
@@ -84,7 +76,7 @@ const ViewOrders = () => {
   };
 
   return (
-    <div className="p-3 h-full w-full flex flex-col gap-3">
+    <div className="p-3 pb-0 h-full w-full flex flex-col gap-3">
       <Header
         icon={FaReceipt}
         title="View Orders"
@@ -109,10 +101,10 @@ const ViewOrders = () => {
                 <th className="p-2 w-[10%]">
                   <div className="flex items-center justify-center gap-5 w-full">
                     Actions
-                    <PiMicrosoftExcelLogoFill
-                      onClick={exportToExcel}
-                      className="cursor-pointer"
-                      size={25}
+                    <ExportToExcel
+                      data={filteredOrders}
+                      fileName="Orders"
+                      sheetName="Orders"
                     />
                   </div>
                 </th>

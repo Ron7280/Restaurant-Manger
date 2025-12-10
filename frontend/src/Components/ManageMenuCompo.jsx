@@ -56,10 +56,7 @@ const ManageMenuCompo = ({ it, openEdit, confirmDelete }) => {
                 ${Number(it.price).toFixed(2)}
               </div>
             </div>
-            <div
-              className="font-semibold h-[70%] overflow-auto scrollbar-track-transparent 
-            scrollbar-thin scrollbar-thumb-transparent text-slate-400"
-            >
+            <div className="font-semibold h-[70%] overflow-auto scrollbar-none text-slate-400">
               {it.description}
             </div>
           </div>

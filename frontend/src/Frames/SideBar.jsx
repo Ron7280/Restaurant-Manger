@@ -37,14 +37,10 @@ const SideBar = ({ roleOptions }) => {
       </div>
 
       <div className="w-full h-[95%]">
-        <div
-          className="scroll-left  flex flex-col gap-2 overflow-y-auto h-full scrollbar-thin
-       scrollbar-thumb-mainColor scrollbar-track-transparent "
-        >
-          {roleOptions.map((q, i) => (
+        <div className="flex flex-col gap-2 overflow-y-auto scrollbar-none h-full ">
+          {roleOptions.map((q, index) => (
             <button
-              dir="ltr"
-              key={i}
+              key={index}
               onClick={() => navigate(q.nav)}
               className="w-full text-left px-3 py-2 rounded-lg bg-white/6 hover:bg-white/10 transition flex items-center gap-3"
             >

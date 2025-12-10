@@ -29,7 +29,7 @@ const History = () => {
   });
 
   return (
-    <div className="p-3 h-full w-full flex flex-col gap-3">
+    <div className="p-3 pb-0 h-full w-full flex flex-col gap-3">
       <Header
         icon={BsFillBoxSeamFill}
         title="Delivery History"
@@ -38,19 +38,35 @@ const History = () => {
         btnFunction={() => setModalOpen(true)}
         button={false}
         searchBTN={true}
+        excelBtn={true}
+        Excel_Data={filteredDeliveries.filter(
+          (delivery) => delivery.delivered === true
+        )}
+        Excel_text={"Deliveries History"}
       />
-
-      {filteredDeliveries.length === 0 ? (
-        <p>No orders delivered yet.</p>
-      ) : (
-        <div className="grid grid-cols-2 gap-3">
-          {filteredDeliveries
-            .filter((delivery) => delivery.delivered === true)
-            .map((delivery) => (
-              <DeliveryHistoryCompo key={delivery.id} delivery={delivery} />
-            ))}
-        </div>
-      )}
+      <div className="w-full h-[95%] overflow-auto scrollbar-none pr-1">
+        {filteredDeliveries.length === 0 ? (
+          <p>No orders delivered yet.</p>
+        ) : (
+          <div className="grid grid-cols-2 gap-3">
+            {filteredDeliveries
+              .filter((delivery) => delivery.delivered === true)
+              .map((delivery) => (
+                <DeliveryHistoryCompo key={delivery.id} delivery={delivery} />
+              ))}
+            {filteredDeliveries
+              .filter((delivery) => delivery.delivered === true)
+              .map((delivery) => (
+                <DeliveryHistoryCompo key={delivery.id} delivery={delivery} />
+              ))}
+            {filteredDeliveries
+              .filter((delivery) => delivery.delivered === true)
+              .map((delivery) => (
+                <DeliveryHistoryCompo key={delivery.id} delivery={delivery} />
+              ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

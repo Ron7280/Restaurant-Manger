@@ -171,7 +171,7 @@ const ManageMenu = () => {
   );
 
   return (
-    <div className="p-3 h-full w-full flex flex-col gap-3">
+    <div className="p-3 pb-0 h-full w-full flex flex-col gap-3">
       <Header
         icon={FaUtensils}
         title="Manage Menu"
@@ -179,6 +179,10 @@ const ManageMenu = () => {
         handleSearchChange={(e) => setSearch(e.target.value)}
         btnFunction={openCreate}
         button={true}
+        searchBTN={true}
+        excelBtn={true}
+        Excel_Data={filtered}
+        Excel_text={"Menu"}
       />
 
       {loading && (
@@ -193,10 +197,7 @@ const ManageMenu = () => {
         </div>
       )}
 
-      <div
-        className="grid grid-cols-3 gap-3 h-[95%]
-       overflow-y-auto scrollbar-thin scrollbar-thumb-mainColor scrollbar-track-transparent"
-      >
+      <div className="grid grid-cols-3 gap-3 h-[95%] overflow-y-auto scrollbar-none">
         {filtered.map((it, index) => (
           <ManageMenuCompo
             key={index}

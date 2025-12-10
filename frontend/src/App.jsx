@@ -59,12 +59,12 @@ function App() {
                     <Route path="manage" element={<ManageMenu />} />
                     <Route path="inventory" element={<ManageInventory />} />
                     <Route path="viewOrders" element={<ViewOrders />} />
+                    <Route path="manageUsers" element={<ManageUsers />} />
+                    <Route path="buySupplies" element={<BuySupplies />} />
                     <Route
                       path="assignDeliveries"
                       element={<AssignDeliveries />}
                     />
-                    <Route path="manageUsers" element={<ManageUsers />} />
-                    <Route path="buySupplies" element={<BuySupplies />} />
 
                     <Route path="viewMenu" element={<ViewMenu />} />
                     <Route path="orderPage" element={<OrderPage />} />

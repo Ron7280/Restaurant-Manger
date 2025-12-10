@@ -35,7 +35,7 @@ const ViewMenuCompo = ({ item, onAddToOrder }) => {
           <div className="text-lg font-bold text-gray-800 h-[20%]">
             {item.name}
           </div>
-          <div className="text-gray-500 flex-1 h-[60%] overflow-auto scrollbar-thin scrollbar-thumb-transparent scrollbar-track-transparent hover:scrollbar-thumb-gray-400/50">
+          <div className="text-gray-500 flex-1 h-[60%] overflow-auto scrollbar-none">
             {item.description}
           </div>
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../../Components/Header";
 import { HiBuildingStorefront } from "react-icons/hi2";
 import { API } from "../../API_URL";
+import ExportToExcel from "../../Components/ExportToExcel";
 
 const BuySupplies = () => {
   const [purchases, setPurchases] = useState([]);
@@ -38,7 +39,7 @@ const BuySupplies = () => {
   );
 
   return (
-    <div className="p-3 h-full w-full flex flex-col gap-3">
+    <div className="p-3 pb-0 h-full w-full flex flex-col gap-3">
       <Header
         icon={HiBuildingStorefront}
         title="Buy Supplies"
@@ -59,7 +60,16 @@ const BuySupplies = () => {
               <th className="p-2 w-[10%] text-left">Ordered By</th>
               <th className="p-2 w-[15%] text-left">Buyer</th>
               <th className="p-2 w-[15%] text-left">Created At</th>
-              <th className="p-2 w-[15%] text-left">Updated At</th>
+              <th className="p-2 w-[15%] text-left">
+                <div className="flex items-center justify-center gap-5 w-full">
+                  Updated At
+                  <ExportToExcel
+                    data={filteredPurchases}
+                    fileName="Purchases"
+                    sheetName="Purchases"
+                  />
+                </div>
+              </th>
             </tr>
           </thead>
           <tbody>

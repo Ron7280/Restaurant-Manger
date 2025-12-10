@@ -138,7 +138,7 @@ const ManageInventory = () => {
   };
 
   return (
-    <div className="p-3 h-full w-full flex flex-col gap-3">
+    <div className="p-3 pb-0 h-full w-full flex flex-col gap-3">
       <Header
         icon={FaBoxOpen}
         title="Manage Inventory"
@@ -147,12 +147,12 @@ const ManageInventory = () => {
         searchBTN={true}
         btnFunction={() => setModalOpen(true)}
         button={true}
+        excelBtn={true}
+        Excel_Data={filteredItems}
+        Excel_text={"All Inventory"}
       />
 
-      <div
-        className="grid grid-cols-2 gap-3 w-full h-[95%] overflow-auto 
-      scrollbar-thin scrollbar-thumb-transparent scrollbar-track-transparent"
-      >
+      <div className="grid grid-cols-2 gap-3 w-full h-[95%] overflow-auto scrollbar-none">
         {matchesTableFilter(filteredItems, "ingredient", ">=", 50) && (
           <ItemTable
             title="Quantity of ingredient equal or bigger then 50"

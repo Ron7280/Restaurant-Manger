@@ -160,7 +160,7 @@ const TrackMap = () => {
 
   if (!lat || !lng)
     return (
-      <div className="p-3 h-full w-full flex flex-col gap-3">
+      <div className="p-3 pb-0 h-full w-full flex flex-col gap-3">
         <Header
           icon={FaMapMarkedAlt}
           title="Track Map"
@@ -198,7 +198,7 @@ const TrackMap = () => {
     );
 
   return (
-    <div className="p-3 h-full w-full flex flex-col gap-3">
+    <div className="p-3 pb-0 h-full w-full flex flex-col gap-3">
       <Header
         icon={FaMapMarkedAlt}
         title="Track Map"

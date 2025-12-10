@@ -1,6 +1,7 @@
 import { FaSearch, FaPlus } from "react-icons/fa";
 import { TfiBackRight } from "react-icons/tfi";
 import { useNavigate } from "react-router-dom";
+import ExportToExcel from "./ExportToExcel";
 const Header = ({
   searchQuery,
   handleSearchChange,
@@ -9,6 +10,9 @@ const Header = ({
   title,
   button,
   searchBTN,
+  Excel_text,
+  Excel_Data,
+  excelBtn,
 }) => {
   const navigate = useNavigate();
   return (
@@ -35,6 +39,13 @@ const Header = ({
             />
             <FaSearch className="text-emerald-400" />
           </div>
+        )}
+        {excelBtn && (
+          <ExportToExcel
+            data={Excel_Data}
+            fileName={`${Excel_text} Items`}
+            sheetName={`${Excel_text} Items`}
+          />
         )}
         {button && (
           <button

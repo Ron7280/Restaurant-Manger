@@ -45,10 +45,7 @@ const Paginated = ({ data, RenderComponent, onOffsetChange }) => {
 
   return (
     <div className="flex flex-col h-full">
-      <div
-        className="flex flex-col gap-3 p-1 h-[90%] pl-2 pr-2 scrollbar-track-transparent
-        overflow-y-scroll scrollbar-thin scrollbar-thumb-mainColor2 "
-      >
+      <div className="flex flex-col gap-3 p-1 h-[90%] pl-2 pr-2 overflow-y-scroll scrollbar-none">
         {currentItems.map((item, index) => (
           <RenderComponent key={index} {...item} />
         ))}

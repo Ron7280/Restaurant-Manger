@@ -132,8 +132,8 @@ const OrderPage = () => {
             Your Order
           </div>
           <div
-            className="flex flex-col gap-3 overflow-y-auto scrollbar-thin scrollbar-thumb-mainColor
-          h-full pr-2 scrollbar-track-transparent"
+            className="flex flex-col gap-3 overflow-y-auto scrollbar-none
+          h-full pr-2 "
           >
             {order.length === 0 && (
               <div className="text-gray-500">No items selected.</div>
