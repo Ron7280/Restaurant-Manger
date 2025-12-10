@@ -19,7 +19,13 @@ import ReactDOMServer from "react-dom/server";
 
 const redIcon = new L.DivIcon({
   html: ReactDOMServer.renderToString(
-    <div style={{ color: "red", fontSize: "32px" }}>
+    <div
+      style={{
+        color: "red",
+        fontSize: "32px",
+        animation: "bounce 1s infinite",
+      }}
+    >
       <IoLocation />
     </div>
   ),
@@ -167,7 +173,7 @@ const TrackMap = () => {
           button={false}
           searchQuery={searchQuery}
           handleSearchChange={handleSearchChange}
-          searchBTN={true}
+          searchField={true}
         />
 
         <div className="h-full w-full rounded-xl overflow-hidden shadow-lg">
@@ -203,11 +209,11 @@ const TrackMap = () => {
         icon={FaMapMarkedAlt}
         title="Track Map"
         button={false}
-        searchBTN={false}
+        searchField={false}
       />
 
-      <div className="rounded-xl bg-white p-5 flex flex-col gap-6">
-        <div className="flex flex-col gap-1">
+      <div className="rounded-xl bg-white p-3 flex flex-col gap-3">
+        <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2">
             <div
               className="h-9 w-9 flex items-center justify-center rounded-md
@@ -220,7 +226,9 @@ const TrackMap = () => {
             </div>
           </div>
 
-          <div className="text-mainColor2 font-medium">
+          <div className="flex items-center gap-1 text-mainColor2 font-medium">
+            <IoLocation size={25} className="animate-bounce text-Red" />
+
             {address || "Loading..."}
           </div>
         </div>

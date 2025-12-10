@@ -144,7 +144,7 @@ const ManageInventory = () => {
         title="Manage Inventory"
         searchQuery={searchQuery}
         handleSearchChange={handleSearchChange}
-        searchBTN={true}
+        searchField={true}
         btnFunction={() => setModalOpen(true)}
         button={true}
         excelBtn={true}

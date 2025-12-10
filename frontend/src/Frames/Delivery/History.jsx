@@ -37,7 +37,7 @@ const History = () => {
         handleSearchChange={handleSearchChange}
         btnFunction={() => setModalOpen(true)}
         button={false}
-        searchBTN={true}
+        searchField={true}
         excelBtn={true}
         Excel_Data={filteredDeliveries.filter(
           (delivery) => delivery.delivered === true

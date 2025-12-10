@@ -179,7 +179,7 @@ const ManageMenu = () => {
         handleSearchChange={(e) => setSearch(e.target.value)}
         btnFunction={openCreate}
         button={true}
-        searchBTN={true}
+        searchField={true}
         excelBtn={true}
         Excel_Data={filtered}
         Excel_text={"Menu"}

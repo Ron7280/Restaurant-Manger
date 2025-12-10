@@ -80,7 +80,7 @@ const MyOrders = () => {
         handleSearchChange={handleSearchChange}
         btnFunction={() => navigate("/menu/viewMenu")}
         button={true}
-        searchBTN={true}
+        searchField={true}
       />
 
       {filteredOrders.length === 0 && (

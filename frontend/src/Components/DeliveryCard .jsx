@@ -95,7 +95,7 @@ const DeliveryCard = ({ delivery, fetchDeliveries }) => {
               <button
                 onClick={Delivered}
                 className="flex  items-center text-white gap-3 p-1 rounded-lg
-              shadow-black shadow-md justify-center bg-mainColor w-[50%]"
+              shadow-black shadow-md justify-center bg-mainColor w-[50%] "
               >
                 Delivered <FaCheckToSlot size={20} />
               </button>

@@ -29,6 +29,7 @@ import {
 } from "./Contexts";
 import SuppliesToBuy from "./Frames/Buyer/SuppliesToBuy";
 import PurchaseHistory from "./Frames/Buyer/PurchaseHistory";
+import CustomerService from "./Frames/Customers/CustomerService";
 
 function App() {
   const [changeTheme, setChangeTheme] = useState(false);
@@ -69,6 +70,10 @@ function App() {
                     <Route path="viewMenu" element={<ViewMenu />} />
                     <Route path="orderPage" element={<OrderPage />} />
                     <Route path="myOrders" element={<MyOrders />} />
+                    <Route
+                      path="customerService"
+                      element={<CustomerService />}
+                    />
 
                     <Route path="assigned" element={<AssignedDeliveries />} />
                     <Route path="trackMap" element={<TrackMap />} />

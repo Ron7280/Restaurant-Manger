@@ -57,7 +57,7 @@ const AssignedDeliveries = () => {
         handleSearchChange={handleSearchChange}
         btnFunction={() => setModalOpen(true)}
         button={false}
-        searchBTN={true}
+        searchField={true}
       />
 
       {filteredDeliveries.length === 0 ? (

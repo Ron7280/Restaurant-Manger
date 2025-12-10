@@ -14,6 +14,7 @@ import { Outlet } from "react-router-dom";
 import { BsFillBoxSeamFill } from "react-icons/bs";
 import SideBar from "./SideBar";
 import { BiSolidPurchaseTag } from "react-icons/bi";
+import { RiCustomerService2Fill } from "react-icons/ri";
 
 const Menu = ({ roleProp }) => {
   const role = roleProp || localStorage.getItem("role");
@@ -33,6 +34,12 @@ const Menu = ({ roleProp }) => {
           text2: "Track your orders",
           nav: "/menu/MyOrders",
           icon: <FaClipboardList size={30} />,
+        },
+        {
+          text1: "Customer service",
+          text2: "Get Help",
+          nav: "/menu/customerService",
+          icon: <RiCustomerService2Fill size={30} />,
         },
       ],
       admin: [

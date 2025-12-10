@@ -9,7 +9,7 @@ const Header = ({
   icon: Icon,
   title,
   button,
-  searchBTN,
+  searchField,
   Excel_text,
   Excel_Data,
   excelBtn,
@@ -28,7 +28,7 @@ const Header = ({
       </div>
 
       <div className="flex items-center justify-end w-[50%] gap-3">
-        {searchBTN && (
+        {searchField && (
           <div className="flex justify-between w-[50%] rounded-lg bg-white items-center pl-2 pr-2 shadow-md shadow-black">
             <input
               type="text"
@@ -50,8 +50,8 @@ const Header = ({
         {button && (
           <button
             onClick={btnFunction}
-            className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-mainColor text-white
-            rounded-lg shadow-md shadow-black p-2"
+            className="inline-flex items-center gap-2 bg-mainColor text-white
+            rounded-lg shadow-md font-semibold shadow-black p-2"
           >
             <FaPlus /> Add Item
           </button>
